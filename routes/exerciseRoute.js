@@ -1,5 +1,7 @@
 const { Router } = require("express");
-const { allExerciseService } = require("../services/homeService/homeService");
+const {
+  allExerciseService,
+} = require("../services/exerciseService/exerciseService");
 
 const router = Router();
 
