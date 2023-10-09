@@ -1,6 +1,7 @@
 require("dotenv").config();
 const path = require("path");
 const exerciseRoute = require("./routes/exerciseRoute");
+const trainingsRoute = require("./routes/trainingRoute");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -21,6 +22,7 @@ app.use(
 );
 
 app.use("/", exerciseRoute);
+app.use("/trainings", trainingsRoute);
 
 const start = async () => {
   try {
