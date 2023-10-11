@@ -32,8 +32,12 @@ class AllExerciseService {
   async getAppartExercise(exerciseName) {
     try {
       const targetExercise = await exerciseModel.find({ exerciseName });
+
       return targetExercise;
-    } catch (error) {}
+    } catch (error) {
+      console.error("Ошибка при отправке отдельного упражнения:", error);
+      res.status(500).send("Ошибка при отправке отдельного упражнения");
+    }
   }
 }
 

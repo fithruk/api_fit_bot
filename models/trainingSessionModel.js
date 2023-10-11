@@ -6,7 +6,8 @@ const trainingSessionSchema = new Schema({
     required: true,
   },
   dateOfStart: {
-    type: Date.now(),
+    type: Date,
+    default: Date.now(),
     required: true,
   },
   isFinished: {
@@ -15,13 +16,14 @@ const trainingSessionSchema = new Schema({
   },
   exercises: [
     {
-      exerciseName: {
-        type: String,
-        required: true,
+      exercise: {
+        type: Schema.Types.ObjectId,
+        ref: "Exercise",
+        // required: true,
       },
       numberOfSet: {
         type: Number,
-        required: true,
+        // required: true,
       },
       countOfReps: {
         type: Number,
