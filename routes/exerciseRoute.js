@@ -5,10 +5,35 @@ const {
 
 const router = Router();
 
-router.get("/", (req, res) => {
+// удалить потом нижестоящий код
+router.get("/", async (req, res) => {
   const subDirectory = "arms"; // часть пути ,категория группы упражнений, должна приходить из запроса
-  allExerciseService.getAllExercises(res, subDirectory);
-  allExerciseService.getAppartExercise("бицепс_гантелями_с_супинацией");
+  try {
+    const requestedGroupe = await allExerciseService.getAllExercises(
+      subDirectory
+    );
+
+    res.setHeader("Content-Type", "application/json");
+    res.json(requestedGroupe);
+  } catch (error) {
+    console.error("Ошибка при отправке упражнений:", error);
+    res.status(500).send("Ошибка при отправке упражнений");
+  }
+});
+
+router.post("/", async (req, res) => {
+  const subDirectory = "arms"; // часть пути ,категория группы упражнений, должна приходить из запроса
+  try {
+    const requestedGroupe = await allExerciseService.getAllExercises(
+      subDirectory
+    );
+
+    res.setHeader("Content-Type", "application/json");
+    res.json(requestedGroupe);
+  } catch (error) {
+    console.error("Ошибка при отправке упражнений:", error);
+    res.status(500).send("Ошибка при отправке упражнений");
+  }
 });
 
 module.exports = router;

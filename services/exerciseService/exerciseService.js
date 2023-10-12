@@ -3,17 +3,16 @@ const path = require("path");
 const exerciseModel = require("../../models/exerciseModel");
 
 class AllExerciseService {
-  async getAllExercises(res, subDirectory) {
+  async getAllExercises(subDirectory) {
+    console.log(subDirectory);
     try {
       const exercisesArray = await fs.readdir(
         path.join(__dirname, "../../public/", `${subDirectory}`)
       );
 
-      res.setHeader("Content-Type", "application/json");
-      res.json(exercisesArray.map((str) => str.split(".")[0]));
+      return exercisesArray.map((str) => str.split(".")[0]);
     } catch (error) {
-      console.error("Ошибка при отправке изображения:", error);
-      res.status(500).send("Ошибка при отправке изображения");
+      console.error("Ошибка при getAllExercises:", error);
     }
   }
 
