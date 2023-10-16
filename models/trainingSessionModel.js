@@ -17,13 +17,12 @@ const trainingSessionSchema = new Schema({
   exercises: [
     {
       exercise: {
-        type: Schema.Types.ObjectId,
-        ref: "Exercise",
-        // required: true,
+        type: String,
+        //required: true,
       },
       numberOfSet: {
         type: Number,
-        // required: true,
+        //required: true,
       },
       countOfReps: {
         type: Number,

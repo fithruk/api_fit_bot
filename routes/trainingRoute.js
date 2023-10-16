@@ -26,10 +26,10 @@ router.put("/closeTrainingSession", async (req, res) => {
 });
 
 router.put("/updateTrainingPerfomance", async (req, res) => {
-  const { userName, exerciseId, countOfReps } = req.body;
+  const { userName, exercise, countOfReps } = req.body;
   const { status } = await newTrainingSession.updateTrainingPerfomance(
     userName,
-    exerciseId,
+    exercise,
     countOfReps
   );
   res.json({ status });

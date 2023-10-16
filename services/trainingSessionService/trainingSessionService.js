@@ -44,7 +44,7 @@ class TrainingSessionService {
     }
   }
 
-  async updateTrainingPerfomance(userName, exerciseId, countOfReps) {
+  async updateTrainingPerfomance(userName, exercise, countOfReps) {
     try {
       const candidate = await trainingSessionSchema.findOne({
         userName,
@@ -52,28 +52,28 @@ class TrainingSessionService {
       });
 
       const isCurentExercise = candidate.exercises.some(
-        (ex) => ex.exercise == exerciseId
+        (ex) => ex.exercise == exercise
       );
 
       if (candidate && !isCurentExercise) {
         const newSet = {
-          exercise: exerciseId,
+          exercise: exercise,
           numberOfSet: 1,
           countOfReps: countOfReps,
         };
 
         candidate.exercises.push(newSet);
         await candidate.save();
-        return { status: "Jopa conya" };
+        return { status: "Succes" };
       }
 
       if (isCurentExercise) {
         const howManySetsThereAre = candidate.exercises.filter(
-          (ex) => ex.exercise == exerciseId
+          (ex) => ex.exercise == exercise
         ).length;
 
         const newSet = {
-          exercise: exerciseId,
+          exercise: exercise,
           numberOfSet: howManySetsThereAre + 1,
           countOfReps: countOfReps,
         };

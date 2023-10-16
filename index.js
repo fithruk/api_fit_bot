@@ -21,7 +21,7 @@ app.use(
   })
 );
 
-app.use("/", exerciseRoute);
+app.use("/exercise", exerciseRoute);
 app.use("/trainings", trainingsRoute);
 
 const start = async () => {

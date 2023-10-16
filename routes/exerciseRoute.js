@@ -19,14 +19,30 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const subDirectory = "arms"; // часть пути ,категория группы упражнений, должна приходить из запроса
+  const { groupe } = req.body;
+
   try {
-    const requestedGroupe = await allExerciseService.getAllExercises(
+    const requestedGroupe = await allExerciseService.getAllExercises(groupe);
+
+    res.setHeader("Content-Type", "application/json");
+    res.json(requestedGroupe);
+  } catch (error) {
+    console.error("Ошибка при отправке упражнений:", error);
+    res.status(500).send("Ошибка при отправке упражнений");
+  }
+});
+
+router.post("/apart", async (req, res) => {
+  const { exercise, subDirectory } = req.body;
+
+  try {
+    const requestedExercise = await allExerciseService.getAppartExerciseFull(
+      exercise,
       subDirectory
     );
 
     res.setHeader("Content-Type", "application/json");
-    res.json(requestedGroupe);
+    res.json(requestedExercise);
   } catch (error) {
     console.error("Ошибка при отправке упражнений:", error);
     res.status(500).send("Ошибка при отправке упражнений");

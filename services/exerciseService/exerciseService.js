@@ -28,14 +28,21 @@ class AllExerciseService {
     }
   }
 
-  async getAppartExercise(exerciseName) {
+  async getAppartExerciseFull(exerciseName, subDirectory) {
     try {
+      const exerciseImage = path.join(
+        __dirname,
+        "../../public/",
+        subDirectory,
+        exerciseName
+      );
+
       const targetExercise = await exerciseModel.find({ exerciseName });
 
-      return targetExercise;
+      return { exerciseImage, targetExercise };
     } catch (error) {
       console.error("Ошибка при отправке отдельного упражнения:", error);
-      res.status(500).send("Ошибка при отправке отдельного упражнения");
+      // res.status(500).send("Ошибка при отправке отдельного упражнения");
     }
   }
 }
