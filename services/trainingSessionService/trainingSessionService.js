@@ -25,6 +25,22 @@ class TrainingSessionService {
     }
   }
 
+  async isTrainingExist(userName) {
+    try {
+      const candidate = await trainingSessionSchema.findOne({
+        userName,
+        isFinished: false,
+      });
+
+      if (!candidate) {
+        return { status: "У вас нет активной тренировки." };
+      }
+    } catch (error) {
+      console.log("Ошибка во время проверки тренировки");
+      console.log(error.message);
+    }
+  }
+
   async closeCurrentTrainingSession(userName) {
     try {
       const candidate = await trainingSessionSchema.findOne({
@@ -80,7 +96,10 @@ class TrainingSessionService {
 
         candidate.exercises.push(newSet);
         await candidate.save();
-        return { status: "current" };
+        return {
+          status: "current",
+          currentEcercise: candidate.exercises[candidate.exercises.length - 1],
+        };
       }
     } catch (error) {
       console.log("Ошибка во время обновления упражнения");
