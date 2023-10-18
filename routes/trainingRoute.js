@@ -17,6 +17,13 @@ router.post("/", async (req, res) => {
   res.json({ status });
 });
 
+router.post("/isTrainingExist", async (req, res) => {
+  const { userName } = req.body;
+
+  const status = await newTrainingSession.isTrainingExist(userName);
+  res.json({ status });
+});
+
 router.put("/closeTrainingSession", async (req, res) => {
   const { userName } = req.body;
   const { status } = await newTrainingSession.closeCurrentTrainingSession(

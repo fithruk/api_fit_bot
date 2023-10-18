@@ -33,8 +33,9 @@ class TrainingSessionService {
       });
 
       if (!candidate) {
-        return { status: "У вас нет активной тренировки." };
+        return false;
       }
+      return true;
     } catch (error) {
       console.log("Ошибка во время проверки тренировки");
       console.log(error.message);
