@@ -61,7 +61,8 @@ class TrainingSessionService {
     }
   }
 
-  async updateTrainingPerfomance(userName, exercise, countOfReps) {
+  async updateTrainingPerfomance(userName, exercise, countOfReps, weight) {
+    console.log(typeof weight + " type weight");
     try {
       const candidate = await trainingSessionSchema.findOne({
         userName,
@@ -74,9 +75,10 @@ class TrainingSessionService {
 
       if (candidate && !isCurentExercise) {
         const newSet = {
-          exercise: exercise,
+          exercise,
           numberOfSet: 1,
-          countOfReps: countOfReps,
+          countOfReps,
+          weight,
         };
 
         candidate.exercises.push(newSet);
@@ -90,9 +92,10 @@ class TrainingSessionService {
         ).length;
 
         const newSet = {
-          exercise: exercise,
+          exercise,
           numberOfSet: howManySetsThereAre + 1,
-          countOfReps: countOfReps,
+          countOfReps,
+          weight,
         };
 
         candidate.exercises.push(newSet);

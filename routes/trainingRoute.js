@@ -33,11 +33,12 @@ router.put("/closeTrainingSession", async (req, res) => {
 });
 
 router.put("/updateTrainingPerfomance", async (req, res) => {
-  const { userName, exercise, countOfReps } = req.body;
+  const { userName, exercise, countOfReps, weight } = req.body;
   const { status } = await newTrainingSession.updateTrainingPerfomance(
     userName,
     exercise,
-    countOfReps
+    countOfReps,
+    +weight
   );
   res.json({ status });
 });

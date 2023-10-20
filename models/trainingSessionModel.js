@@ -18,13 +18,17 @@ const trainingSessionSchema = new Schema({
     {
       exercise: {
         type: String,
-        //required: true,
+        required: true,
       },
       numberOfSet: {
         type: Number,
-        //required: true,
+        required: true,
       },
       countOfReps: {
+        type: Number,
+        required: true,
+      },
+      weight: {
         type: Number,
         required: true,
       },
