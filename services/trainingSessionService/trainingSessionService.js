@@ -4,12 +4,23 @@ const exerciseSchema = require("../../models/exerciseModel");
 class TrainingSessionService {
   constructor() {}
 
-  async createNewTrainingSession(userName) {
+  async getCurrentTreiningSession(userName) {
     try {
       const candidate = await trainingSessionSchema.findOne({
         userName,
         isFinished: false,
       });
+
+      return candidate && candidate;
+    } catch (error) {
+      console.log("Ошибка при получении текущей тренировочной сессии");
+      console.log(error.message);
+    }
+  }
+
+  async createNewTrainingSession(userName) {
+    try {
+      const candidate = await this.getCurrentTreiningSession(userName);
 
       if (candidate && !candidate.isFinished) {
         return { status: "exist" };
@@ -62,7 +73,6 @@ class TrainingSessionService {
   }
 
   async updateTrainingPerfomance(userName, exercise, countOfReps, weight) {
-    console.log(typeof weight + " type weight");
     try {
       const candidate = await trainingSessionSchema.findOne({
         userName,
