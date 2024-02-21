@@ -38,10 +38,7 @@ class TrainingSessionService {
 
   async isTrainingExist(userName) {
     try {
-      const candidate = await trainingSessionSchema.findOne({
-        userName,
-        isFinished: false,
-      });
+      const candidate = await this.getCurrentTreiningSession(userName);
 
       if (!candidate) {
         return false;
