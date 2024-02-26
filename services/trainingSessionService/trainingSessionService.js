@@ -118,6 +118,23 @@ class TrainingSessionService {
       return { status: "error" };
     }
   }
+
+  async removeSet(userName, id) {
+    //Here, map numbers of set
+    console.log(id);
+    try {
+      const candidate = await this.getCurrentTreiningSession(userName);
+      const newExercises = candidate.exercises.filter(
+        (ex) => ex._id.toString() != id.toString()
+      );
+
+      candidate.exercises = [...newExercises];
+      await candidate.save();
+      return { status: "Succes" };
+    } catch (error) {
+      return { status: "Error" };
+    }
+  }
 }
 
 const newTrainingSession = new TrainingSessionService();

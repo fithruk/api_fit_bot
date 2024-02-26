@@ -52,4 +52,10 @@ router.put("/updateTrainingPerfomance", async (req, res) => {
   res.json({ status });
 });
 
+router.patch("/removeSet", async (req, res) => {
+  const { userName, id } = req.body;
+  const { status } = await newTrainingSession.removeSet(userName, id);
+  res.json({ status });
+});
+
 module.exports = router;
