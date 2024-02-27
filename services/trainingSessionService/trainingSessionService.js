@@ -124,10 +124,14 @@ class TrainingSessionService {
     console.log(id);
     try {
       const candidate = await this.getCurrentTreiningSession(userName);
+      const exerciseName = candidate.exercises.find(
+        (ex) => ex._id.toString() == id.toString()
+      ).exercise;
+
       const newExercises = candidate.exercises.filter(
         (ex) => ex._id.toString() != id.toString()
       );
-
+      console.log(exerciseName);
       candidate.exercises = [...newExercises];
       await candidate.save();
       return { status: "Succes" };
