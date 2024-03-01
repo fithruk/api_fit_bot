@@ -120,33 +120,36 @@ class TrainingSessionService {
   }
 
   async removeSet(userName, id) {
-    //Here, map numbers of set
-    console.log(id);
     try {
       const candidate = await this.getCurrentTreiningSession(userName);
       const exerciseName = candidate.exercises.find(
         (ex) => ex._id.toString() == id.toString()
       ).exercise;
 
-      const newExercises = candidate.exercises.filter(
+      let newExercises = candidate.exercises.filter(
         (ex) => ex._id.toString() != id.toString()
       );
 
       let indexes = new Set([]);
+
       newExercises.forEach((ex, ind) => {
         if (ex.exercise == exerciseName) {
-          indexes.push(ind);
-        }
-      });
-      console.log(indexes);
-      newExercises.map((ex, ind) => {
-        if (indexes.has(ind)) {
-          console.log(ex);
+          indexes.add(ind);
         }
       });
 
-      // candidate.exercises = [...newExercises];
-      // await candidate.save();
+      newExercises = newExercises.map((ex, ind) => {
+        if (indexes.has(ind)) {
+          const indexOfSet = Array.from(indexes).findIndex((el) => el === ind);
+
+          return { ...ex._doc, numberOfSet: indexOfSet + 1 };
+        } else {
+          return ex;
+        }
+      });
+
+      candidate.exercises = [...newExercises];
+      await candidate.save();
       return { status: "Succes" };
     } catch (error) {
       return { status: "Error" };
