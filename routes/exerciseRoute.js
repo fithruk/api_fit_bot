@@ -20,12 +20,26 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const { groupe } = req.body;
-
+  console.log(groupe + " groupe");
   try {
     const requestedGroupe = await allExerciseService.getAllExercises(groupe);
 
     res.setHeader("Content-Type", "application/json");
     res.json(requestedGroupe);
+  } catch (error) {
+    console.error("Ошибка при отправке упражнений:", error);
+    res.status(500).send("Ошибка при отправке упражнений");
+  }
+});
+
+router.post("/subGroupe", async (req, res) => {
+  const { groupe } = req.body;
+
+  try {
+    const subGroupes = await allExerciseService.getSubGroupes(groupe);
+
+    res.setHeader("Content-Type", "application/json");
+    res.json(subGroupes);
   } catch (error) {
     console.error("Ошибка при отправке упражнений:", error);
     res.status(500).send("Ошибка при отправке упражнений");

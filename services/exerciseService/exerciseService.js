@@ -3,8 +3,8 @@ const path = require("path");
 const exerciseModel = require("../../models/exerciseModel");
 
 class AllExerciseService {
+  // Here...
   async getAllExercises(subDirectory) {
-    console.log(subDirectory);
     try {
       const exercisesArray = await fs.readdir(
         path.join(__dirname, "../../public/", `${subDirectory}`)
@@ -25,6 +25,19 @@ class AllExerciseService {
     } catch (error) {
       console.error("Ошибка при отправке мышечных групп:", error);
       res.status(500).send("Ошибка при отправке мышечных групп");
+    }
+  }
+
+  async getSubGroupes(subGroup) {
+    try {
+      const subGroupesPath = path.join(__dirname, "../../public/", subGroup);
+
+      const subGroupesArray = await fs.readdir(subGroupesPath);
+
+      return subGroupesArray;
+    } catch (error) {
+      console.error("Ошибка при отправке отдельного упражнения:", error);
+      // res.status(500).send("Ошибка при отправке отдельного упражнения");
     }
   }
 
