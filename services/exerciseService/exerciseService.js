@@ -41,18 +41,20 @@ class AllExerciseService {
     }
   }
 
-  async getAppartExerciseFull(exerciseName, subDirectory) {
+  async getExersicesBySubGroup(currentGroup, subDirectory) {
     try {
       const exerciseImage = path.join(
         __dirname,
         "../../public/",
-        subDirectory,
-        exerciseName
+        currentGroup,
+        subDirectory
       );
 
-      const targetExercise = await exerciseModel.find({ exerciseName });
+      const exercisesByGroup = await fs.readdir(
+        path.join(__dirname, "../../public/", currentGroup, subDirectory)
+      );
 
-      return { exerciseImage, targetExercise };
+      return exercisesByGroup.map((ex) => ex.split(".")[0]);
     } catch (error) {
       console.error("Ошибка при отправке отдельного упражнения:", error);
       // res.status(500).send("Ошибка при отправке отдельного упражнения");
