@@ -58,4 +58,8 @@ router.patch("/removeSet", async (req, res) => {
   res.json({ status });
 });
 
+router.post("/analitics", async (req, res) => {
+  const {} = req.body;
+});
+
 module.exports = router;
