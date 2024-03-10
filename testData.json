@@ -1,0 +1,106 @@
+[
+  {
+    "userName": "Death_rowww",
+    "dateOfStart": "2024-04-10T08:51:59.415Z",
+    "isFinished": true,
+    "exercises": [
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 1,
+        "countOfReps": 40,
+        "weight": 10
+      }
+    ]
+  },
+  {
+    "userName": "Death_rowww",
+    "dateOfStart": "2024-05-11T08:51:59.415Z",
+    "isFinished": true,
+    "exercises": [
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 1,
+        "countOfReps": 10,
+        "weight": 40
+      }
+    ]
+  },
+  {
+    "userName": "Death_rowww",
+    "dateOfStart": "2024-06-29T08:51:59.415Z",
+    "isFinished": true,
+    "exercises": [
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 1,
+        "countOfReps": 10,
+        "weight": 30
+      }
+    ]
+  },
+  {
+    "userName": "Death_rowww",
+    "dateOfStart": "2024-07-30T08:51:59.415Z",
+    "isFinished": true,
+    "exercises": [
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 1,
+        "countOfReps": 30,
+        "weight": 10
+      }
+    ]
+  },
+  {
+    "userName": "Death_rowww",
+    "dateOfStart": "2024-08-31T08:51:59.415Z",
+    "isFinished": true,
+    "exercises": [
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 50
+      }
+    ]
+  },
+  {
+    "userName": "Death_rowww",
+    "dateOfStart": "2024-09-01T08:51:59.415Z",
+    "isFinished": true,
+    "exercises": [
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 60
+      }
+    ]
+  },
+  {
+    "userName": "Death_rowww",
+    "dateOfStart": "2024-10-02T08:51:59.415Z",
+    "isFinished": true,
+    "exercises": [
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 1,
+        "countOfReps": 12,
+        "weight": 70
+      }
+    ]
+  },
+  {
+    "userName": "Death_rowww",
+    "dateOfStart": "2024-11-03T08:51:59.415Z",
+    "isFinished": true,
+    "exercises": [
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 1,
+        "countOfReps": 25,
+        "weight": 80
+      }
+    ]
+  }
+]
