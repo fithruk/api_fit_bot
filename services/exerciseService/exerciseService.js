@@ -3,7 +3,6 @@ const path = require("path");
 const exerciseModel = require("../../models/exerciseModel");
 
 class AllExerciseService {
-  // Here... попробовать сосавить путь из ответов юзера
   async getAllExercises(subDirectory) {
     try {
       const exercisesArray = await fs.readdir(
