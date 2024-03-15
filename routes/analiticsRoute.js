@@ -5,7 +5,7 @@ const router = Router();
 router.get("/", async (req, res) => {});
 
 router.post("/", async (req, res) => {
-  console.log(req.body);
+  console.log(req.cookies);
   res.send("jopa");
 });
 

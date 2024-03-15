@@ -1,0 +1,3 @@
+class StatService {
+  constructor() {}
+}
