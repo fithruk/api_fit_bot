@@ -17,6 +17,22 @@ class TrainingSessionService {
       console.log(error.message);
     }
   }
+  // Here....
+  async getAllExercisesOfTimePeriod(userName, dateOfStart, dateOfFinish) {
+    console.log(new Date(dateOfStart));
+    try {
+      const candidateArray = await trainingSessionSchema.find({
+        userName,
+        isFinished: true,
+        dateOfStart: { $lt: new Date(dateOfStart) },
+      });
+
+      console.log(candidateArray);
+    } catch (error) {
+      console.log("Ошибка при получении текущей тренировочной сессии");
+      console.log(error.message);
+    }
+  }
 
   async createNewTrainingSession(userName) {
     try {
