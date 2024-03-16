@@ -24,7 +24,7 @@ class TrainingSessionService {
       const candidateArray = await trainingSessionSchema.find({
         userName,
         isFinished: true,
-        dateOfStart: { $lt: new Date(dateOfStart) },
+        dateOfStart: { $lte: new Date(dateOfStart) },
       });
 
       console.log(candidateArray);

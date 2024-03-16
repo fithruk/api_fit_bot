@@ -8,8 +8,8 @@ const router = Router();
 router.get("/", async (req, res) => {});
 
 router.post("/", async (req, res) => {
-  const { username, dateOfStart } = req.body;
-  await newTrainingSession.getAllExercisesOfTimePeriod(username, dateOfStart);
+  const { userName, dateOfStart } = req.body;
+  await newTrainingSession.getAllExercisesOfTimePeriod(userName, dateOfStart);
   res.send("jopa");
 });
 
