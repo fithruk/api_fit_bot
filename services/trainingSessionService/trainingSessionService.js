@@ -19,12 +19,14 @@ class TrainingSessionService {
   }
   // Here....
   async getAllExercisesOfTimePeriod(userName, dateOfStart, dateOfFinish) {
-    console.log(new Date(dateOfStart));
     try {
       const candidateArray = await trainingSessionSchema.find({
         userName,
         isFinished: true,
-        dateOfStart: { $lte: new Date(dateOfStart) },
+        dateOfStart: {
+          $gte: new Date(dateOfStart),
+          $lte: new Date(dateOfFinish),
+        },
       });
 
       console.log(candidateArray);
