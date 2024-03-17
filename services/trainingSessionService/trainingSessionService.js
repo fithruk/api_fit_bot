@@ -20,7 +20,7 @@ class TrainingSessionService {
   // Here....
   async getAllExercisesOfTimePeriod(userName, dateOfStart, dateOfFinish) {
     try {
-      const candidateArray = await trainingSessionSchema.find({
+      const candidateExArrayInPeriod = await trainingSessionSchema.find({
         userName,
         isFinished: true,
         dateOfStart: {
@@ -29,7 +29,9 @@ class TrainingSessionService {
         },
       });
 
-      console.log(candidateArray);
+      candidateExArrayInPeriod.map((item) => {
+        console.log(item.exercises);
+      });
     } catch (error) {
       console.log("Ошибка при получении текущей тренировочной сессии");
       console.log(error.message);
