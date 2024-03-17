@@ -24,8 +24,8 @@ class TrainingSessionService {
         userName,
         isFinished: true,
         dateOfStart: {
-          $gte: new Date(dateOfStart),
-          $lte: new Date(dateOfFinish),
+          $gte: new Date(dateOfStart).setHours(0, 0, 0, 0),
+          $lte: new Date(dateOfFinish).setHours(0, 0, 0, 0),
         },
       });
 
