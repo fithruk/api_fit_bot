@@ -17,7 +17,7 @@ class TrainingSessionService {
       console.log(error.message);
     }
   }
-  // Here....
+
   async getAllExercisesOfTimePeriod(userName, dateOfStart, dateOfFinish) {
     try {
       const candidateExArrayInPeriod = await trainingSessionSchema.find({
@@ -29,7 +29,32 @@ class TrainingSessionService {
         },
       });
 
-      console.log(candidateExArrayInPeriod);
+      let uniqueExercises = new Set();
+
+      candidateExArrayInPeriod.forEach((item) => {
+        item.exercises.forEach((ex) => uniqueExercises.add(ex.exercise));
+      });
+
+      uniqueExercises = [...uniqueExercises].reduce(
+        (acc, ex) => ({ ...acc, [ex]: [] }),
+        {}
+      );
+
+      candidateExArrayInPeriod.forEach(
+        ({ userName, dateOfStart, exercises }) => {
+          exercises.forEach((ex) => {
+            if (uniqueExercises[ex.exercise]) {
+              uniqueExercises[ex.exercise].push({
+                ...ex.toObject(),
+                userName,
+                dateOfStart,
+              });
+            }
+          });
+        }
+      );
+
+      return uniqueExercises;
     } catch (error) {
       console.log("Ошибка при получении текущей тренировочной сессии");
       console.log(error.message);

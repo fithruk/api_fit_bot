@@ -104,6 +104,12 @@
         "numberOfSet": 1,
         "countOfReps": 20,
         "weight": 25
+      },
+      {
+        "exercise": "Спина - С_горизонтальной_плоскости - тяга_гантели_поочередно",
+        "numberOfSet": 2,
+        "countOfReps": 10,
+        "weight": 50
       }
     ]
   },
@@ -116,6 +122,12 @@
         "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
         "numberOfSet": 1,
         "countOfReps": 12,
+        "weight": 70
+      },
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 2,
+        "countOfReps": 21,
         "weight": 70
       },
       {
