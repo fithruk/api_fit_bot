@@ -35,6 +35,18 @@
         "numberOfSet": 1,
         "countOfReps": 10,
         "weight": 30
+      },
+      {
+        "exercise": "Руки - мышцы_трицепса - Из-за_головы_гантелей",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 20
+      },
+      {
+        "exercise": "Спина - С_горизонтальной_плоскости - тяга_гантели_поочередно",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 25
       }
     ]
   },
@@ -48,6 +60,12 @@
         "numberOfSet": 1,
         "countOfReps": 30,
         "weight": 10
+      },
+      {
+        "exercise": "Руки - мышцы_трицепса - Из-за_головы_гантелей",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 20
       }
     ]
   },
@@ -61,6 +79,12 @@
         "numberOfSet": 1,
         "countOfReps": 20,
         "weight": 50
+      },
+      {
+        "exercise": "Руки - мышцы_трицепса - Из-за_головы_гантелей",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 20
       }
     ]
   },
@@ -74,6 +98,12 @@
         "numberOfSet": 1,
         "countOfReps": 20,
         "weight": 60
+      },
+      {
+        "exercise": "Спина - С_горизонтальной_плоскости - тяга_гантели_поочередно",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 25
       }
     ]
   },
@@ -87,6 +117,12 @@
         "numberOfSet": 1,
         "countOfReps": 12,
         "weight": 70
+      },
+      {
+        "exercise": "Руки - мышцы_трицепса - Из-за_головы_гантелей",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 20
       }
     ]
   },
@@ -100,6 +136,12 @@
         "numberOfSet": 1,
         "countOfReps": 25,
         "weight": 80
+      },
+      {
+        "exercise": "Спина - С_горизонтальной_плоскости - тяга_гантели_поочередно",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 25
       }
     ]
   }

@@ -29,9 +29,7 @@ class TrainingSessionService {
         },
       });
 
-      candidateExArrayInPeriod.map((item) => {
-        console.log(item.exercises);
-      });
+      console.log(candidateExArrayInPeriod);
     } catch (error) {
       console.log("Ошибка при получении текущей тренировочной сессии");
       console.log(error.message);
