@@ -3,6 +3,7 @@ const path = require("path");
 const exerciseRoute = require("./routes/exerciseRoute");
 const trainingsRoute = require("./routes/trainingRoute");
 const analiticsRoute = require("./routes/analiticsRoute");
+const registrationRoute = require("./routes/registrationRoute");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -25,6 +26,7 @@ app.use(
 app.use("/exercise", exerciseRoute);
 app.use("/trainings", trainingsRoute);
 app.use("/analitics", analiticsRoute);
+app.use("/registration", registrationRoute);
 
 const start = async () => {
   try {
