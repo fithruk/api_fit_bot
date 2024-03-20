@@ -9,8 +9,11 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const candidat = await registrationService.findOrCreateUser(req.body);
-  if (candidat) return res.json(apiResponseObj.userAlreadyExist);
+  const response = await registrationService.findOrCreateUser(req.body);
+  if (typeof response == "string") return res.json(response);
+  else {
+    return res.json(response._id);
+  }
 
   //res.json(apiResponseObj.userAlreadyExist);
 });
