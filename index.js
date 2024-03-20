@@ -29,7 +29,7 @@ app.use(
 app.use("/exercise", exerciseRoute);
 app.use("/trainings", trainingsRoute);
 app.use("/analitics", analiticsRoute);
-app.use("/registration", registrationMiddleware, registrationRoute);
+app.use("/registration", registrationRoute);
 
 const start = async () => {
   try {
