@@ -1,12 +1,22 @@
-const userSchema = require("../../models/userModel");
+const UserSchema = require("../../models/userModel");
 // доделать функционал регистрации нового пользователя
 class RegistrationService {
-  async findOrCreateUser(userName) {
-    const candidate = await userSchema.findOne({ userName });
+  async findOrCreateUser({ userName, firstName, lastName, userTall }) {
+    const candidate = await UserSchema.findOne({ userName });
     if (candidate) {
-      return console.log(candidate);
+      return candidate;
     }
-    console.log(`${userName} is not exist!`);
+    if (
+      typeof userName !== "string" ||
+      typeof firstName !== "string" ||
+      typeof lastName !== "string" ||
+      typeof userTall !== "number"
+    ) {
+      return "Invalid data about user!";
+    }
+
+    const newUser = new UserSchema({ userName, firstName, lastName, userTall });
+    await newUser.save();
   }
 }
 

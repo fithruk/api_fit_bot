@@ -6,12 +6,12 @@ const router = Router();
 router.get("/", (req, res) => {
   res.send("Jopa");
 });
-// Доделать функционал регистрации и проверки существующего юзера в базе
+
 router.post("/", async (req, res) => {
-  const { userName, firstName, lastName, userTall, registrationDate } =
-    req.body;
-  const candidat = await registrationService.findOrCreateUser(userName);
-  res.json({ userName, firstName, lastName, userTall, registrationDate });
+  const candidat = await registrationService.findOrCreateUser(req.body);
+  if (candidat) return res.json(candidat._id.toString());
+
+  res.json({ ...req.body });
 });
 
 module.exports = router;
