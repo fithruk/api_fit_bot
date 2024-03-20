@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const apiResponseObj = require("../apiRespStatuses/apiRespStatuses");
 const registrationService = require("../services/registrationService/registrationService");
 
 const router = Router();
@@ -9,13 +8,14 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const response = await registrationService.findOrCreateUser(req.body);
-  if (typeof response == "string") return res.json(response);
+  const responseOrCandidate = await registrationService.findOrCreateUser(
+    req.body
+  );
+  if (typeof responseOrCandidate == "string")
+    return res.json(responseOrCandidate);
   else {
-    return res.json(response._id);
+    return res.json(responseOrCandidate._id);
   }
-
-  //res.json(apiResponseObj.userAlreadyExist);
 });
 
 module.exports = router;
