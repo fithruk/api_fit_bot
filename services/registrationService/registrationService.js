@@ -2,9 +2,10 @@ const UserSchema = require("../../models/userModel");
 const apiResponceObj = require("../../apiRespStatuses/apiRespStatuses");
 
 class RegistrationService {
-  async findUSer({ userName }) {
+  async findUSer(userName) {
     try {
       const candidate = await UserSchema.findOne({ userName });
+
       if (candidate) {
         return candidate;
       } else {

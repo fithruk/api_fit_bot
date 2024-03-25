@@ -13,10 +13,11 @@ router.get("/", (req, res) => {
 
 router.post("/getUser", async (req, res) => {
   const { userName } = req.body;
+
   try {
     const resp = await registrationService.findUSer(userName);
-    if (resp._id) return res.status(200).json(resp._id);
-    res.json(resp);
+    if (resp._id) return res.status(200).json({ id: resp._id });
+    res.json({ response: resp });
   } catch (error) {
     console.log(error.message);
     console.log("error in router.post(/getUser");
