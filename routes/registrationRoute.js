@@ -16,8 +16,8 @@ router.post("/getUser", async (req, res) => {
 
   try {
     const resp = await registrationService.findUSer(userName);
-    if (resp._id) return res.status(200).json({ id: resp._id });
-    res.json({ response: resp });
+    if (resp._id) return res.status(200).json({ isExist: true, id: resp._id });
+    res.json({ isExist: false });
   } catch (error) {
     console.log(error.message);
     console.log("error in router.post(/getUser");
