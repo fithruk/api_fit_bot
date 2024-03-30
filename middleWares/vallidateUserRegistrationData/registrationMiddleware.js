@@ -1,13 +1,14 @@
 const apiResponceObj = require("../../apiRespStatuses/apiRespStatuses");
 
 const registrationMiddleware = (req, res, next) => {
-  const { userName, firstName, lastName, userTall } = req.body;
+  const { userName, firstName, lastName, email, phone } = req.body;
 
   if (
     typeof userName !== "string" ||
     typeof firstName !== "string" ||
     typeof lastName !== "string" ||
-    typeof userTall !== "number"
+    typeof email !== "string" ||
+    typeof +phone !== "number"
   ) {
     return res.json(apiResponceObj.errorDuringValidationOfNewUser);
   }

@@ -16,12 +16,13 @@ class RegistrationService {
     }
   }
 
-  async createNewUser({ userName, firstName, lastName, userTall }) {
+  async createNewUser({ userName, firstName, lastName, email, phone }) {
     const newUser = new UserSchema({
       userName,
       firstName,
       lastName,
-      userTall,
+      email,
+      phone,
     });
     await newUser.save();
     return apiResponceObj.userSuccesfullyCreated;
