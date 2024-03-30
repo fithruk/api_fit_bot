@@ -13,8 +13,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  userTall: {
+  phone: {
     type: Number,
+    required: true,
+  },
+  email: {
+    type: String,
     required: true,
   },
   registrationDate: {
