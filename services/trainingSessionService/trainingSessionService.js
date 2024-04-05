@@ -163,6 +163,7 @@ class TrainingSessionService {
   }
 
   async removeSet(userName, id) {
+    console.log(id);
     try {
       const candidate = await this.getCurrentTreiningSession(userName);
       const exerciseName = candidate.exercises.find(
@@ -195,6 +196,7 @@ class TrainingSessionService {
       await candidate.save();
       return { status: "Succes" };
     } catch (error) {
+      console.log(error);
       return { status: "Error" };
     }
   }

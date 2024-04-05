@@ -55,6 +55,7 @@ router.put("/updateTrainingPerfomance", async (req, res) => {
 router.patch("/removeSet", async (req, res) => {
   const { userName, id } = req.body;
   const { status } = await newTrainingSession.removeSet(userName, id);
+  console.log(status);
   res.json({ status });
 });
 
