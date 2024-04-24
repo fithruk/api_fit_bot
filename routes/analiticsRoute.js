@@ -9,13 +9,13 @@ router.get("/", async (req, res) => {});
 
 router.post("/", async (req, res) => {
   const { userName, dateOfStart, dateOfFinish } = req.body;
-  const servedExercisesByName =
+  const exercisesServedByName =
     await newTrainingSession.getAllExercisesOfTimePeriod(
       userName,
       dateOfStart,
       dateOfFinish
     );
-  res.send(servedExercisesByName);
+  res.send(exercisesServedByName);
 });
 
 module.exports = router;
