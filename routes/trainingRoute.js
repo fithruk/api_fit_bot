@@ -33,12 +33,17 @@ router.post("/getCurrentTrainingSession", async (req, res) => {
   res.json({ currentUserSession });
 });
 
-router.put("/closeTrainingSession", async (req, res) => {
+router.post("/closeTrainingSession", async (req, res) => {
   const { userName } = req.body;
-  const { status } = await newTrainingSession.closeCurrentTrainingSession(
-    userName
-  );
-  res.json({ status });
+  const currentTrainingSession =
+    await newTrainingSession.getCurrentTreiningSession(userName);
+
+  console.log(currentTrainingSession.exercises);
+
+  // const { status } = await newTrainingSession.closeCurrentTrainingSession(
+  //   userName
+  // );
+  res.status(500).send("jopa"); //Поправить ответ
 });
 
 router.put("/updateTrainingPerfomance", async (req, res) => {
