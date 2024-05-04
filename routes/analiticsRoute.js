@@ -18,4 +18,9 @@ router.post("/", async (req, res) => {
   res.send(exercisesServedByName);
 });
 
+router.get("/absRecords", async (req, res) => {
+  const { userName } = req.query;
+  const result = await newTrainingSession.getAbsRecords(userName);
+  res.status(200).json({ result });
+});
 module.exports = router;

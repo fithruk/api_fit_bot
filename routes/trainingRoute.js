@@ -35,6 +35,7 @@ router.post("/getCurrentTrainingSession", async (req, res) => {
 
 router.post("/closeTrainingSession", async (req, res) => {
   const { userName } = req.body;
+
   const currentTrainingSession =
     await newTrainingSession.getCurrentTreiningSession(userName);
 

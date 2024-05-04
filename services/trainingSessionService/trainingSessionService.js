@@ -163,7 +163,6 @@ class TrainingSessionService {
   }
 
   async removeSet(userName, id) {
-    console.log(id);
     try {
       const candidate = await this.getCurrentTreiningSession(userName);
       const exerciseName = candidate.exercises.find(
@@ -198,6 +197,25 @@ class TrainingSessionService {
     } catch (error) {
       console.log(error);
       return { status: "Error" };
+    }
+  }
+
+  async getAbsRecords(userName) {
+    try {
+      return await trainingSessionSchema.aggregate([
+        // Фильтруем сессии по имени пользователя
+        { $match: { userName } },
+        // Разворачиваем массив exercises на индивидуальные документы
+        { $unwind: "$exercises" },
+        {
+          $group: {
+            _id: { exerciseName: "$exercises.exercise" },
+            maxWeight: { $max: "$exercises.weight" },
+          },
+        },
+      ]);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   }
 }
