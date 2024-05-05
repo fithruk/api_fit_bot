@@ -206,11 +206,17 @@ class TrainingSessionService {
         // Фильтруем сессии по имени пользователя
         { $match: { userName } },
         // Разворачиваем массив exercises на индивидуальные документы
+        {
+          $addFields: {
+            "exercises.dateOfStart": "$dateOfStart", // Добавляем поле из родительского документа
+          },
+        },
         { $unwind: "$exercises" },
         {
           $group: {
             _id: { exerciseName: "$exercises.exercise" },
             maxWeight: { $max: "$exercises.weight" },
+            date: { $first: "$exercises.dateOfStart" },
           },
         },
       ]);
