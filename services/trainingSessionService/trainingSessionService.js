@@ -224,6 +224,19 @@ class TrainingSessionService {
       console.error("Error fetching data:", error);
     }
   }
+
+  async getWorkoutByPeriod(userName, dateStart, dateEnd) {
+    try {
+      return await trainingSessionSchema.find({
+        userName: userName,
+        dateOfStart: { $gte: dateStart },
+        dateOfStart: { $lte: dateEnd },
+        isFinished: true,
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 }
 
 const newTrainingSession = new TrainingSessionService();
