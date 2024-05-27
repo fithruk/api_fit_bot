@@ -36,15 +36,15 @@ router.post("/getCurrentTrainingSession", async (req, res) => {
 router.post("/closeTrainingSession", async (req, res) => {
   const { userName } = req.body;
 
-  const currentTrainingSession =
-    await newTrainingSession.getCurrentTreiningSession(userName);
+  const { status } = await newTrainingSession.closeCurrentTrainingSession(
+    userName
+  );
 
-  console.log(currentTrainingSession.exercises);
-
-  // const { status } = await newTrainingSession.closeCurrentTrainingSession(
-  //   userName
-  // );
-  res.status(500).send("jopa"); //Поправить ответ
+  if (status === 200) {
+    res.status(200).send("Тренировка успешно завершена.");
+  } else {
+    res.status(500).send("Somethink went wrong...");
+  }
 });
 
 router.put("/updateTrainingPerfomance", async (req, res) => {

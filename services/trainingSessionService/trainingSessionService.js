@@ -102,13 +102,13 @@ class TrainingSessionService {
       if (candidate) {
         candidate.isFinished = true;
         await candidate.save();
-        return { status: "closed" };
+        return { status: 200 };
       }
-      return { status: "error" };
+      return { status: 500 };
     } catch (error) {
       console.log("Ошибка во время завершения тренировки");
       console.log(error.message);
-      return { status: "error" };
+      return { status: 500 };
     }
   }
 
