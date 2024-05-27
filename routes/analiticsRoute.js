@@ -32,10 +32,12 @@ router.post("/workoutByPeriod", async (req, res) => {
     dateStart,
     dateEnd
   );
+
   result = result.map((item) => ({
     dateOfStart: item.dateOfStart,
     exercises: item.exercises,
   }));
+
   res.status(200).json(result);
 });
 module.exports = router;

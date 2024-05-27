@@ -1,7 +1,7 @@
 [
   {
     "userName": "Death_rowww",
-    "dateOfStart": "2024-04-10T08:51:59.415Z",
+    "dateOfStart": "2024-04-02T08:51:59.415Z",
     "isFinished": true,
     "exercises": [
       {
@@ -14,7 +14,7 @@
   },
   {
     "userName": "Death_rowww",
-    "dateOfStart": "2024-05-11T08:51:59.415Z",
+    "dateOfStart": "2024-05-12T08:51:59.415Z",
     "isFinished": true,
     "exercises": [
       {
@@ -27,7 +27,7 @@
   },
   {
     "userName": "Death_rowww",
-    "dateOfStart": "2024-06-29T08:51:59.415Z",
+    "dateOfStart": "2024-04-01T08:51:59.415Z",
     "isFinished": true,
     "exercises": [
       {
@@ -52,7 +52,7 @@
   },
   {
     "userName": "Death_rowww",
-    "dateOfStart": "2024-07-30T08:51:59.415Z",
+    "dateOfStart": "2024-07-02T08:51:59.415Z",
     "isFinished": true,
     "exercises": [
       {
@@ -71,7 +71,7 @@
   },
   {
     "userName": "Death_rowww",
-    "dateOfStart": "2024-08-31T08:51:59.415Z",
+    "dateOfStart": "2024-08-03T08:51:59.415Z",
     "isFinished": true,
     "exercises": [
       {
@@ -110,12 +110,67 @@
         "numberOfSet": 2,
         "countOfReps": 10,
         "weight": 50
+      },
+      {
+        "exercise": "Спина - С_горизонтальной_плоскости - тяга_гантели_поочередно",
+        "numberOfSet": 3,
+        "countOfReps": 10,
+        "weight": 50
+      },
+      {
+        "exercise": "Спина - С_горизонтальной_плоскости - тяга_гантели_поочередно",
+        "numberOfSet": 4,
+        "countOfReps": 10,
+        "weight": 50
+      },
+      {
+        "exercise": "Спина - С_горизонтальной_плоскости - тяга_гантели_поочередно",
+        "numberOfSet": 5,
+        "countOfReps": 10,
+        "weight": 50
+      },
+      {
+        "exercise": "Спина - С_горизонтальной_плоскости - тяга_гантели_поочередно",
+        "numberOfSet": 6,
+        "countOfReps": 10,
+        "weight": 50
+      },
+      {
+        "exercise": "Спина - С_горизонтальной_плоскости - тяга_гантели_поочередно",
+        "numberOfSet": 7,
+        "countOfReps": 10,
+        "weight": 50
       }
     ]
   },
   {
     "userName": "Death_rowww",
     "dateOfStart": "2024-10-02T08:51:59.415Z",
+    "isFinished": true,
+    "exercises": [
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 1,
+        "countOfReps": 12,
+        "weight": 70
+      },
+      {
+        "exercise": "Спина - С_вертикальной_плоскости - тяга_верх_блока_узким_хватом",
+        "numberOfSet": 2,
+        "countOfReps": 21,
+        "weight": 70
+      },
+      {
+        "exercise": "Руки - мышцы_трицепса - Из-за_головы_гантелей",
+        "numberOfSet": 1,
+        "countOfReps": 20,
+        "weight": 20
+      }
+    ]
+  },
+  {
+    "userName": "Death_rowww",
+    "dateOfStart": "2024-10-03T08:51:59.415Z",
     "isFinished": true,
     "exercises": [
       {
