@@ -1,5 +1,5 @@
 const trainingSessionSchema = require("../../models/trainingSessionModel");
-const exerciseSchema = require("../../models/exerciseModel");
+const StatService = require("../../services/statService/statService");
 
 class TrainingSessionService {
   constructor() {}
@@ -100,19 +100,33 @@ class TrainingSessionService {
         isFinished: false,
       });
       if (candidate) {
-        candidate.isFinished = true;
-        await candidate.save();
+        const { averageDifferenceInMinutes, averageDifferenceInSeconds } =
+          new StatService().countAvarageTimeOfRestBetweenSets(
+            candidate.exercises
+          );
+        console.log(
+          `Средняя разница: ${averageDifferenceInMinutes} минут и ${averageDifferenceInSeconds} секунд`
+        );
+        // candidate.isFinished = true;
+        // await candidate.save();
         return { status: 200 };
       }
       return { status: 500 };
     } catch (error) {
       console.log("Ошибка во время завершения тренировки");
       console.log(error.message);
+      console.log(error);
       return { status: 500 };
     }
   }
 
-  async updateTrainingPerfomance(userName, exercise, countOfReps, weight) {
+  async updateTrainingPerfomance(
+    userName,
+    exercise,
+    countOfReps,
+    weight,
+    timeOfStartOfNewSet
+  ) {
     try {
       const candidate = await trainingSessionSchema.findOne({
         userName,
@@ -129,6 +143,7 @@ class TrainingSessionService {
           numberOfSet: 1,
           countOfReps,
           weight,
+          timeOfStartOfNewSet,
         };
 
         candidate.exercises.push(newSet);
@@ -146,6 +161,7 @@ class TrainingSessionService {
           numberOfSet: howManySetsThereAre + 1,
           countOfReps,
           weight,
+          timeOfStartOfNewSet,
         };
 
         candidate.exercises.push(newSet);
