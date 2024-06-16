@@ -21,12 +21,24 @@ class StatService {
     const totalDifference = differences.reduce((acc, curr) => acc + curr, 0);
     const averageDifference = totalDifference / differences.length;
 
-    const averageDifferenceInMinutes = Math.floor(averageDifference / 60000);
-    const averageDifferenceInSeconds = Math.floor(
-      (averageDifference % 60000) / 1000
+    const averageRestInMinutes = Math.floor(averageDifference / 60000);
+    const averageRestInSeconds = Math.floor((averageDifference % 60000) / 1000);
+
+    return { averageRestInMinutes, averageRestInSeconds };
+  };
+
+  countDurationOfWorkout = (dateOfStart, dateOfEnd) => {
+    dateOfStart = new Date(dateOfStart);
+    dateOfEnd = new Date(dateOfEnd);
+
+    const differenceInMs = Math.abs(dateOfEnd - dateOfStart);
+
+    const durationInHours = Math.floor(differenceInMs / (1000 * 60 * 60));
+    const durationInMinutes = Math.floor(
+      (differenceInMs % (1000 * 60 * 60)) / (1000 * 60)
     );
 
-    return { averageDifferenceInMinutes, averageDifferenceInSeconds };
+    return { durationInHours, durationInMinutes };
   };
 }
 

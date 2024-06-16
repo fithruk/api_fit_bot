@@ -94,21 +94,30 @@ class TrainingSessionService {
   }
 
   async closeCurrentTrainingSession(userName) {
+    const statService = new StatService();
+    const endDate = new Date();
+
     try {
       const candidate = await trainingSessionSchema.findOne({
         userName,
         isFinished: false,
       });
       if (candidate) {
-        const { averageDifferenceInMinutes, averageDifferenceInSeconds } =
-          new StatService().countAvarageTimeOfRestBetweenSets(
-            candidate.exercises
-          );
-        console.log(
-          `Средняя разница: ${averageDifferenceInMinutes} минут и ${averageDifferenceInSeconds} секунд`
-        );
+        const { averageRestInMinutes, averageRestInSeconds } =
+          statService.countAvarageTimeOfRestBetweenSets(candidate.exercises);
+
+        const { durationInHours, durationInMinutes } =
+          statService.countDurationOfWorkout(candidate.dateOfStart, endDate);
         // candidate.isFinished = true;
         // await candidate.save();
+
+        const workoutResult = {
+          averageRestInMinutes,
+          averageRestInSeconds,
+          durationInHours,
+          durationInMinutes,
+          countOfExercises: candidate.exercises.length,
+        };
         return { status: 200 };
       }
       return { status: 500 };
