@@ -110,7 +110,6 @@ class TrainingSessionService {
           statService.countDurationOfWorkout(candidate.dateOfStart, endDate);
         // candidate.isFinished = true;
         // await candidate.save();
-
         const workoutResult = {
           averageRestInMinutes,
           averageRestInSeconds,

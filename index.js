@@ -4,9 +4,6 @@ const exerciseRoute = require("./routes/exerciseRoute");
 const trainingsRoute = require("./routes/trainingRoute");
 const analiticsRoute = require("./routes/analiticsRoute");
 const registrationRoute = require("./routes/registrationRoute");
-const {
-  registrationMiddleware,
-} = require("./middleWares/vallidateUserRegistrationData/registrationMiddleware");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
