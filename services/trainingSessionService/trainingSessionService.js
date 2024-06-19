@@ -123,7 +123,7 @@ class TrainingSessionService {
           averageTimeOfRest: { averageRestInMinutes, averageRestInSeconds },
           workoutDuration: { durationInHours, durationInMinutes },
           dateOfStart: candidate.dateOfStart,
-          _id: candidate._id,
+          workoutId: candidate._id,
         };
 
         await statService.saveWorkoutData(workoutResult);
