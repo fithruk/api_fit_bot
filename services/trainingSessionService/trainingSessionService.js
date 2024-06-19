@@ -64,7 +64,10 @@ class TrainingSessionService {
   async createNewTrainingSession(userName) {
     try {
       const candidate = await this.getCurrentTreiningSession(userName);
-
+      if (candidate.dateOfStart.getDay() < new Date().getDay()) {
+        this.closeCurrentTrainingSession(userName, true);
+        candidate.isFinished = true;
+      }
       if (candidate && !candidate.isFinished) {
         return { status: "exist" };
       }
@@ -93,7 +96,7 @@ class TrainingSessionService {
     }
   }
 
-  async closeCurrentTrainingSession(userName) {
+  async closeCurrentTrainingSession(userName, isForcedClose = false) {
     const statService = new StatService();
     const endDate = new Date();
 
@@ -103,21 +106,37 @@ class TrainingSessionService {
         isFinished: false,
       });
       if (candidate) {
-        const { averageRestInMinutes, averageRestInSeconds } =
-          statService.countAvarageTimeOfRestBetweenSets(candidate.exercises);
-
-        const { durationInHours, durationInMinutes } =
-          statService.countDurationOfWorkout(candidate.dateOfStart, endDate);
-        // candidate.isFinished = true;
-        // await candidate.save();
-        const workoutResult = {
+        const {
           averageRestInMinutes,
           averageRestInSeconds,
           durationInHours,
           durationInMinutes,
-          countOfExercises: candidate.exercises.length,
+        } = statService.prepareWorkoutData(
+          candidate.exercises,
+          candidate.dateOfStart,
+          endDate
+        );
+        candidate.isFinished = true;
+        await candidate.save();
+        const workoutResult = {
+          userName,
+          averageTimeOfRest: { averageRestInMinutes, averageRestInSeconds },
+          workoutDuration: { durationInHours, durationInMinutes },
+          dateOfStart: candidate.dateOfStart,
+          _id: candidate._id,
         };
-        return { status: 200 };
+
+        await statService.saveWorkoutData(workoutResult);
+
+        if (isForcedClose) {
+          return { status: 200 };
+        }
+        return {
+          status: 200,
+          averageTimeOfRest: workoutResult.averageTimeOfRest,
+          workoutDuration: workoutResult.workoutDuration,
+          exLength: candidate.exercises.length,
+        };
       }
       return { status: 500 };
     } catch (error) {

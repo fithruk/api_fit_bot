@@ -1,26 +1,39 @@
 const { Schema, model } = require("mongoose");
-// Релизовать функционал сохранения прогресса пользователя
+
 const StatisticsShema = new Schema({
   userName: {
     type: String,
     requaired: true,
   },
-  absoluteRecords: [
-    {
-      exersice: {
-        type: String,
-      },
-      weight: {
-        type: Number,
-      },
-      countOfReps: {
-        type: Number,
-      },
-      date: {
-        type: Date,
-      },
+  averageTimeOfRest: {
+    averageRestInMinutes: {
+      type: Number,
+      requaired: true,
     },
-  ],
+    averageRestInSeconds: {
+      type: Number,
+      requaired: true,
+    },
+  },
+  workoutDuration: {
+    durationInHours: {
+      type: Number,
+      requaired: true,
+    },
+    durationInMinutes: {
+      type: Number,
+      requaired: true,
+    },
+  },
+  dateOfWorkout: {
+    type: Date,
+    requaired: true,
+  },
+  workoutId: {
+    type: Schema.Types.ObjectId,
+    ref: "TrainingSession",
+    requaired: true,
+  },
 });
 
-module.exports = model("StatisticsShema", StatisticsShema);
+module.exports = model("workoutStatistics", StatisticsShema);

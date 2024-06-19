@@ -1,3 +1,5 @@
+const StatisticsShema = require("../../models/statModel");
+
 class StatService {
   constructor() {}
 
@@ -39,6 +41,31 @@ class StatService {
     );
 
     return { durationInHours, durationInMinutes };
+  };
+
+  prepareWorkoutData = (exersiseArray, dateOfStart, dateOfEnd) => {
+    const { averageRestInMinutes, averageRestInSeconds } =
+      this.countAvarageTimeOfRestBetweenSets(exersiseArray);
+    const { durationInHours, durationInMinutes } = this.countDurationOfWorkout(
+      dateOfStart,
+      dateOfEnd
+    );
+
+    return {
+      averageRestInMinutes,
+      averageRestInSeconds,
+      durationInHours,
+      durationInMinutes,
+    };
+  };
+
+  saveWorkoutData = async (data) => {
+    try {
+      const newWorkoutData = new StatisticsShema(data);
+      await newWorkoutData.save();
+    } catch (error) {
+      return error;
+    }
   };
 }
 
