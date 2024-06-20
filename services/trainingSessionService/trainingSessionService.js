@@ -18,14 +18,14 @@ class TrainingSessionService {
     }
   }
 
-  async getAllExercisesOfTimePeriod(userName, dateOfStart, dateOfFinish) {
+  async getAllExercisesOfTimePeriod(userName, dateStart, dateEnd) {
     try {
       const candidateExArrayInPeriod = await trainingSessionSchema.find({
         userName,
         isFinished: true,
         dateOfStart: {
-          $gte: new Date(dateOfStart).setHours(0, 0, 0, 0),
-          $lte: new Date(dateOfFinish).setHours(0, 0, 0, 0),
+          $gte: new Date(dateStart).setHours(0, 0, 0, 0),
+          $lte: new Date(dateEnd).setHours(23, 59, 59, 999),
         },
       });
 
@@ -56,7 +56,7 @@ class TrainingSessionService {
 
       return uniqueExercises;
     } catch (error) {
-      console.log("Ошибка при получении текущей тренировочной сессии");
+      console.log("Ошибка при получении тренировок в период");
       console.log(error.message);
     }
   }
@@ -64,7 +64,12 @@ class TrainingSessionService {
   async createNewTrainingSession(userName) {
     try {
       const candidate = await this.getCurrentTreiningSession(userName);
-      if (candidate.dateOfStart.getDay() < new Date().getDay()) {
+
+      if (
+        candidate &&
+        candidate.dateOfStart.getDay() < new Date().getDay() &&
+        candidate.dateOfStart.getDate() < new Date().getDate()
+      ) {
         this.closeCurrentTrainingSession(userName, true);
         candidate.isFinished = true;
       }
@@ -78,6 +83,7 @@ class TrainingSessionService {
     } catch (error) {
       console.log("Ошибка во время создания новой тренировки");
       console.log(error.message);
+      console.log(error);
       return { status: "error" };
     }
   }

@@ -26,17 +26,21 @@ router.get("/absRecords", async (req, res) => {
 
 router.post("/workoutByPeriod", async (req, res) => {
   const { userName, dateStart, dateEnd } = req.body;
-
   let result = await newTrainingSession.getWorkoutByPeriod(
     userName,
     dateStart,
     dateEnd
   );
-
-  result = result.map((item) => ({
-    dateOfStart: item.dateOfStart,
-    exercises: item.exercises,
-  }));
+  result = result
+    .filter(
+      (item) =>
+        new Date(item.dateOfStart) >= new Date(dateStart) &&
+        new Date(item.dateOfStart) <= new Date(dateEnd)
+    )
+    .map((item) => ({
+      dateOfStart: item.dateOfStart,
+      exercises: item.exercises,
+    }));
 
   res.status(200).json(result);
 });
