@@ -286,6 +286,47 @@ class TrainingSessionService {
       console.error("Error fetching data:", error);
     }
   }
+
+  findExercisesByUserAndExName = async (userName, exerciseString) => {
+    try {
+      const exerciseData = await trainingSessionSchema.aggregate([
+        { $match: { userName, isFinished: true } }, // Отфильтровываем по имени пользователя и завершенным сессиям
+        { $unwind: "$exercises" }, // Разворачиваем массив exercises
+        { $match: { "exercises.exercise": exerciseString } }, // Фильтруем по названию упражнения
+        {
+          $group: {
+            _id: "$_id", // Группируем по идентификатору тренировки
+            dateOfStart: { $first: "$dateOfStart" }, // Сохраняем дату начала тренировки
+            userName: { $first: "$userName" }, // Сохраняем имя пользователя
+            maxWeightExercise: {
+              $max: {
+                exercise: "$exercises.exercise",
+                numberOfSet: "$exercises.numberOfSet",
+                countOfReps: "$exercises.countOfReps",
+                weight: "$exercises.weight",
+              },
+            }, // Находим упражнение с максимальным весом
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: {
+              dateOfStart: "$dateOfStart",
+              userName: "$userName",
+              exercise: "$maxWeightExercise.exercise",
+              numberOfSet: "$maxWeightExercise.numberOfSet",
+              countOfReps: "$maxWeightExercise.countOfReps",
+              weight: "$maxWeightExercise.weight",
+            },
+          },
+        },
+      ]);
+
+      return exerciseData;
+    } catch (error) {
+      console.error("Ошибка при поиске упражнений:", error.message);
+    }
+  };
 }
 
 const newTrainingSession = new TrainingSessionService();

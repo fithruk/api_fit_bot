@@ -2,7 +2,7 @@ const { Router } = require("express");
 const {
   newTrainingSession,
 } = require("../services/trainingSessionService/trainingSessionService");
-
+const StatService = require("../services/statService/statService");
 const router = Router();
 
 router.get("/", async (req, res) => {});
@@ -43,5 +43,16 @@ router.post("/workoutByPeriod", async (req, res) => {
     }));
 
   res.status(200).json(result);
+});
+
+router.post("/statByExersice", async (req, res) => {
+  const { userName, exersiceSring } = req.body;
+  const exerciseData = await newTrainingSession.findExercisesByUserAndExName(
+    userName,
+    exersiceSring
+  );
+  new StatService().prepareExerciseDataByUserNameAndExName(exerciseData);
+
+  res.status(200).send("jopa");
 });
 module.exports = router;

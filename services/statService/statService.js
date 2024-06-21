@@ -59,6 +59,11 @@ class StatService {
     };
   };
 
+  prepareExerciseDataByUserNameAndExName = (exerciseData) => {
+    if (!Array.isArray(exerciseData)) return;
+    exerciseData.sort((a, b) => a.dateOfStart - b.dateOfStart);
+  };
+
   saveWorkoutData = async (data) => {
     try {
       const newWorkoutData = new StatisticsShema(data);
