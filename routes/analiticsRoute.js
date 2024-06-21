@@ -51,8 +51,13 @@ router.post("/statByExersice", async (req, res) => {
     userName,
     exersiceSring
   );
-  new StatService().prepareExerciseDataByUserNameAndExName(exerciseData);
 
+  const statService = new StatService();
+  const preparedExData =
+    statService.prepareExerciseDataByUserNameAndExName(exerciseData);
+
+  const imgUrl = await statService.loadGraphImg(preparedExData);
+  console.log(imgUrl);
   res.status(200).send("jopa");
 });
 module.exports = router;

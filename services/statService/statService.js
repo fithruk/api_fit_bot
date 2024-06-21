@@ -1,4 +1,6 @@
+const moment = require("moment");
 const StatisticsShema = require("../../models/statModel");
+const QuickChart = require("../../quickChart/quickChart");
 
 class StatService {
   constructor() {}
@@ -62,6 +64,11 @@ class StatService {
   prepareExerciseDataByUserNameAndExName = (exerciseData) => {
     if (!Array.isArray(exerciseData)) return;
     exerciseData.sort((a, b) => a.dateOfStart - b.dateOfStart);
+    if (exerciseData.length > 30) {
+      exerciseData = exerciseData.slice(exerciseData.length - 30);
+    }
+
+    return exerciseData;
   };
 
   saveWorkoutData = async (data) => {
@@ -71,6 +78,21 @@ class StatService {
     } catch (error) {
       return error;
     }
+  };
+
+  loadGraphImg = async (preparedExData) => {
+    const options = {
+      labels: preparedExData.map((item) =>
+        moment(item.dateOfStart).format("'DD/MM/YYYY'")
+      ),
+      labelLine: "Вес снаряда в рабочем подходе",
+      labeBar: "Кол-во повторений",
+      dataForLine: preparedExData.map((item) => item.weight),
+      dataForBar: preparedExData.map((item) => item.countOfReps),
+      text: preparedExData[0].exercise,
+    };
+    const quickChart = new QuickChart(options);
+    return await quickChart.loadQuickChartImg();
   };
 }
 
