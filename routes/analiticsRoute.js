@@ -51,13 +51,12 @@ router.post("/statByExersice", async (req, res) => {
     userName,
     exersiceSring
   );
-
+  // Валидировать ответ при пустом массиве данных
   const statService = new StatService();
   const preparedExData =
     statService.prepareExerciseDataByUserNameAndExName(exerciseData);
 
   const imgUrl = await statService.loadGraphImg(preparedExData);
-  console.log(imgUrl);
-  res.status(200).send("jopa");
+  res.status(200).json({ imgUrl });
 });
 module.exports = router;

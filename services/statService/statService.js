@@ -89,7 +89,10 @@ class StatService {
       labeBar: "Кол-во повторений",
       dataForLine: preparedExData.map((item) => item.weight),
       dataForBar: preparedExData.map((item) => item.countOfReps),
-      text: preparedExData[0].exercise,
+      text:
+        preparedExData.length > 0
+          ? preparedExData[0].exercise
+          : "Нет данных для этого упражнения",
     };
     const quickChart = new QuickChart(options);
     return await quickChart.loadQuickChartImg();
