@@ -51,7 +51,7 @@ router.post("/statByExersice", async (req, res) => {
     userName,
     exersiceSring
   );
-  // Валидировать ответ при пустом массиве данных
+
   if (exerciseData.length === 0) {
     return res.status(204).send();
   }
