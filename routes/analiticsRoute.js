@@ -52,6 +52,9 @@ router.post("/statByExersice", async (req, res) => {
     exersiceSring
   );
   // Валидировать ответ при пустом массиве данных
+  if (exerciseData.length === 0) {
+    return res.status(204).send();
+  }
   const statService = new StatService();
   const preparedExData =
     statService.prepareExerciseDataByUserNameAndExName(exerciseData);
