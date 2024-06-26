@@ -32,6 +32,9 @@ const trainingSessionSchema = new Schema({
         type: Number,
         required: true,
       },
+      timeOfStartOfNewSet: {
+        type: Date,
+      },
     },
   ],
 });

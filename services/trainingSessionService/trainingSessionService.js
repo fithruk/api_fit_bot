@@ -1,5 +1,5 @@
 const trainingSessionSchema = require("../../models/trainingSessionModel");
-const exerciseSchema = require("../../models/exerciseModel");
+const StatService = require("../../services/statService/statService");
 
 class TrainingSessionService {
   constructor() {}
@@ -18,10 +18,61 @@ class TrainingSessionService {
     }
   }
 
+  async getAllExercisesOfTimePeriod(userName, dateStart, dateEnd) {
+    try {
+      const candidateExArrayInPeriod = await trainingSessionSchema.find({
+        userName,
+        isFinished: true,
+        dateOfStart: {
+          $gte: new Date(dateStart).setHours(0, 0, 0, 0),
+          $lte: new Date(dateEnd).setHours(23, 59, 59, 999),
+        },
+      });
+
+      let uniqueExercises = new Set();
+
+      candidateExArrayInPeriod.forEach((item) => {
+        item.exercises.forEach((ex) => uniqueExercises.add(ex.exercise));
+      });
+
+      uniqueExercises = [...uniqueExercises].reduce(
+        (acc, ex) => ({ ...acc, [ex]: [] }),
+        {}
+      );
+
+      candidateExArrayInPeriod.forEach(
+        ({ userName, dateOfStart, exercises }) => {
+          exercises.forEach((ex) => {
+            if (uniqueExercises[ex.exercise]) {
+              uniqueExercises[ex.exercise].push({
+                ...ex.toObject(),
+                userName,
+                dateOfStart,
+              });
+            }
+          });
+        }
+      );
+
+      return uniqueExercises;
+    } catch (error) {
+      console.log("Ошибка при получении тренировок в период");
+      console.log(error.message);
+    }
+  }
+
   async createNewTrainingSession(userName) {
     try {
       const candidate = await this.getCurrentTreiningSession(userName);
 
+      if (
+        candidate &&
+        candidate.dateOfStart.getDay() < new Date().getDay() &&
+        candidate.dateOfStart.getDate() < new Date().getDate()
+      ) {
+        this.closeCurrentTrainingSession(userName, true);
+        candidate.isFinished = true;
+      }
       if (candidate && !candidate.isFinished) {
         return { status: "exist" };
       }
@@ -32,6 +83,7 @@ class TrainingSessionService {
     } catch (error) {
       console.log("Ошибка во время создания новой тренировки");
       console.log(error.message);
+      console.log(error);
       return { status: "error" };
     }
   }
@@ -50,26 +102,64 @@ class TrainingSessionService {
     }
   }
 
-  async closeCurrentTrainingSession(userName) {
+  async closeCurrentTrainingSession(userName, isForcedClose = false) {
+    const statService = new StatService();
+    const endDate = new Date();
+
     try {
       const candidate = await trainingSessionSchema.findOne({
         userName,
         isFinished: false,
       });
       if (candidate) {
+        const {
+          averageRestInMinutes,
+          averageRestInSeconds,
+          durationInHours,
+          durationInMinutes,
+        } = statService.prepareWorkoutData(
+          candidate.exercises,
+          candidate.dateOfStart,
+          endDate
+        );
         candidate.isFinished = true;
         await candidate.save();
-        return { status: "closed" };
+        const workoutResult = {
+          userName,
+          averageTimeOfRest: { averageRestInMinutes, averageRestInSeconds },
+          workoutDuration: { durationInHours, durationInMinutes },
+          dateOfStart: candidate.dateOfStart,
+          workoutId: candidate._id,
+        };
+
+        await statService.saveWorkoutData(workoutResult);
+
+        if (isForcedClose) {
+          return { status: 200 };
+        }
+        return {
+          status: 200,
+          averageTimeOfRest: workoutResult.averageTimeOfRest,
+          workoutDuration: workoutResult.workoutDuration,
+          exLength: candidate.exercises.length,
+        };
       }
-      return { status: "error" };
+      return { status: 500 };
     } catch (error) {
       console.log("Ошибка во время завершения тренировки");
       console.log(error.message);
-      return { status: "error" };
+      console.log(error);
+      return { status: 500 };
     }
   }
 
-  async updateTrainingPerfomance(userName, exercise, countOfReps, weight) {
+  async updateTrainingPerfomance(
+    userName,
+    exercise,
+    countOfReps,
+    weight,
+    timeOfStartOfNewSet
+  ) {
     try {
       const candidate = await trainingSessionSchema.findOne({
         userName,
@@ -86,6 +176,7 @@ class TrainingSessionService {
           numberOfSet: 1,
           countOfReps,
           weight,
+          timeOfStartOfNewSet,
         };
 
         candidate.exercises.push(newSet);
@@ -103,6 +194,7 @@ class TrainingSessionService {
           numberOfSet: howManySetsThereAre + 1,
           countOfReps,
           weight,
+          timeOfStartOfNewSet,
         };
 
         candidate.exercises.push(newSet);
@@ -152,9 +244,89 @@ class TrainingSessionService {
       await candidate.save();
       return { status: "Succes" };
     } catch (error) {
+      console.log(error);
       return { status: "Error" };
     }
   }
+
+  async getAbsRecords(userName) {
+    try {
+      return await trainingSessionSchema.aggregate([
+        // Фильтруем сессии по имени пользователя
+        { $match: { userName } },
+        // Разворачиваем массив exercises на индивидуальные документы
+        {
+          $addFields: {
+            "exercises.dateOfStart": "$dateOfStart", // Добавляем поле из родительского документа
+          },
+        },
+        { $unwind: "$exercises" },
+        {
+          $group: {
+            _id: { exerciseName: "$exercises.exercise" },
+            maxWeight: { $max: "$exercises.weight" },
+            date: { $first: "$exercises.dateOfStart" },
+          },
+        },
+      ]);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  async getWorkoutByPeriod(userName, dateStart, dateEnd) {
+    try {
+      return await trainingSessionSchema.find({
+        userName: userName,
+        dateOfStart: { $gte: dateStart },
+        dateOfStart: { $lte: dateEnd },
+        isFinished: true,
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  findExercisesByUserAndExName = async (userName, exerciseString) => {
+    try {
+      const exerciseData = await trainingSessionSchema.aggregate([
+        { $match: { userName, isFinished: true } }, // Отфильтровываем по имени пользователя и завершенным сессиям
+        { $unwind: "$exercises" }, // Разворачиваем массив exercises
+        { $match: { "exercises.exercise": exerciseString } }, // Фильтруем по названию упражнения
+        {
+          $group: {
+            _id: "$_id", // Группируем по идентификатору тренировки
+            dateOfStart: { $first: "$dateOfStart" }, // Сохраняем дату начала тренировки
+            userName: { $first: "$userName" }, // Сохраняем имя пользователя
+            maxWeightExercise: {
+              $max: {
+                exercise: "$exercises.exercise",
+                numberOfSet: "$exercises.numberOfSet",
+                countOfReps: "$exercises.countOfReps",
+                weight: "$exercises.weight",
+              },
+            }, // Находим упражнение с максимальным весом
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: {
+              dateOfStart: "$dateOfStart",
+              userName: "$userName",
+              exercise: "$maxWeightExercise.exercise",
+              numberOfSet: "$maxWeightExercise.numberOfSet",
+              countOfReps: "$maxWeightExercise.countOfReps",
+              weight: "$maxWeightExercise.weight",
+            },
+          },
+        },
+      ]);
+
+      return exerciseData;
+    } catch (error) {
+      console.error("Ошибка при поиске упражнений:", error.message);
+    }
+  };
 }
 
 const newTrainingSession = new TrainingSessionService();

@@ -54,7 +54,7 @@ router.post("/bySubDirectory", async (req, res) => {
       currentGroup,
       subDirectory
     );
-    console.log(requestedExercises);
+
     res.setHeader("Content-Type", "application/json");
     res.json(requestedExercises);
   } catch (error) {
