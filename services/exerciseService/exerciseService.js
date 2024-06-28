@@ -42,13 +42,6 @@ class AllExerciseService {
 
   async getExersicesBySubGroup(currentGroup, subDirectory) {
     try {
-      const exerciseImage = path.join(
-        __dirname,
-        "../../public/",
-        currentGroup,
-        subDirectory
-      );
-
       const exercisesByGroup = await fs.readdir(
         path.join(__dirname, "../../public/", currentGroup, subDirectory)
       );
@@ -58,6 +51,18 @@ class AllExerciseService {
       console.error("Ошибка при отправке отдельного упражнения:", error);
       // res.status(500).send("Ошибка при отправке отдельного упражнения");
     }
+  }
+
+  async loadExersiceImage(groupe, subGroupe, exName) {
+    const exerciseImage = path.join(
+      __dirname,
+      "../../public/",
+      groupe,
+      subGroupe,
+      exName
+    );
+
+    return exerciseImage;
   }
 }
 

@@ -63,4 +63,22 @@ router.post("/bySubDirectory", async (req, res) => {
   }
 });
 
+router.post("/loadExersiceImage", async (req, res) => {
+  const { groupe, subGroupe, exName } = req.body;
+
+  try {
+    const requestedExercise = await allExerciseService.loadExersiceImage(
+      groupe,
+      subGroupe,
+      exName
+    );
+    console.log(requestedExercise);
+    res.setHeader("Content-Type", "image/gif");
+    res.status(200).send(requestedExercise);
+  } catch (error) {
+    console.error("Ошибка при отправке упражнений:", error);
+    res.status(500).send("Ошибка при отправке упражнений");
+  }
+});
+
 module.exports = router;
