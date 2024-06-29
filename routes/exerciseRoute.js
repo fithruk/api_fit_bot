@@ -72,7 +72,7 @@ router.post("/loadExersiceImage", async (req, res) => {
       subGroupe,
       exName
     );
-    console.log(requestedExercise);
+
     res.setHeader("Content-Type", "image/gif");
     res.status(200).send(requestedExercise);
   } catch (error) {
