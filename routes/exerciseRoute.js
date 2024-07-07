@@ -81,4 +81,19 @@ router.post("/loadExersiceImage", async (req, res) => {
   }
 });
 
+router.post("/loadDescriptionOfExersice", async (req, res) => {
+  const { exName } = req.body;
+
+  try {
+    const requestedExercise =
+      await allExerciseService.loadDescriptionOfExersice(exName);
+
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).json(requestedExercise);
+  } catch (error) {
+    console.error("Ошибка при отправке упражнений:", error);
+    res.status(500).send("Ошибка при отправке упражнений");
+  }
+});
+
 module.exports = router;

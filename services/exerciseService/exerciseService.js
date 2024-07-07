@@ -64,6 +64,50 @@ class AllExerciseService {
 
     return exerciseImage;
   }
+
+  async loadDescriptionOfExersice(exName) {
+    try {
+      const exercise = await exerciseModel.findOne({ name: exName });
+      console.log(exercise);
+      exercise.steps[0].description = exercise.steps[0].description.map(
+        (item) => {
+          let phase = "Подготовка";
+          let instruction = "";
+          let message = "";
+          for (const i in item.toObject()) {
+            if (item.toObject()[i] === ".") {
+              instruction += message;
+            } else {
+              message += item.toObject()[i];
+            }
+          }
+          return { phase, instruction };
+        }
+      );
+
+      if (exercise.steps[2]) {
+        exercise.steps[2].description = exercise.steps[2].description.map(
+          (item) => {
+            let phase = "Обратите внимание";
+            let instruction = "";
+            let message = "";
+            for (const i in item.toObject()) {
+              if (item.toObject()[i] === ".") {
+                instruction += message;
+              } else {
+                message += item.toObject()[i];
+              }
+            }
+            return { phase, instruction };
+          }
+        );
+      }
+
+      return exercise;
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 }
 
 const allExerciseService = new AllExerciseService();
