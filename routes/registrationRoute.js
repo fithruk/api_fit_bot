@@ -30,6 +30,7 @@ router.post("/createNewUser", registrationMiddleware, async (req, res) => {
 
     res.status(200).json(resp);
   } catch (error) {
+    res.status(500).send(error.message);
     console.log(error.message);
     console.log("error in router.post(/createNewUser");
   }
