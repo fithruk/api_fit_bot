@@ -25,6 +25,10 @@ const StatisticsShema = new Schema({
       requaired: true,
     },
   },
+  tonnage: {
+    type: String,
+    requaired: true,
+  },
   dateOfWorkout: {
     type: Date,
     requaired: true,

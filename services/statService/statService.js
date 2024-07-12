@@ -45,6 +45,15 @@ class StatService {
     return { durationInHours, durationInMinutes };
   };
 
+  countWorkoutTonnage = (exersiseArray) => {
+    if (!Array.isArray(exersiseArray))
+      return console.log("exersiseArray mast be an array!");
+    return exersiseArray.reduce(
+      (acc, { countOfReps, weight }) => acc + countOfReps * weight,
+      0
+    );
+  };
+
   prepareWorkoutData = (exersiseArray, dateOfStart, dateOfEnd) => {
     const { averageRestInMinutes, averageRestInSeconds } =
       this.countAvarageTimeOfRestBetweenSets(exersiseArray);
@@ -52,12 +61,14 @@ class StatService {
       dateOfStart,
       dateOfEnd
     );
+    const tonnage = this.countWorkoutTonnage(exersiseArray);
 
     return {
       averageRestInMinutes,
       averageRestInSeconds,
       durationInHours,
       durationInMinutes,
+      tonnage,
     };
   };
 

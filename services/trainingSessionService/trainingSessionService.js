@@ -117,11 +117,13 @@ class TrainingSessionService {
           averageRestInSeconds,
           durationInHours,
           durationInMinutes,
+          tonnage,
         } = statService.prepareWorkoutData(
           candidate.exercises,
           candidate.dateOfStart,
           endDate
         );
+
         candidate.isFinished = true;
         await candidate.save();
         const workoutResult = {
@@ -130,6 +132,7 @@ class TrainingSessionService {
           workoutDuration: { durationInHours, durationInMinutes },
           dateOfStart: candidate.dateOfStart,
           workoutId: candidate._id,
+          tonnage,
         };
 
         await statService.saveWorkoutData(workoutResult);
@@ -142,6 +145,7 @@ class TrainingSessionService {
           averageTimeOfRest: workoutResult.averageTimeOfRest,
           workoutDuration: workoutResult.workoutDuration,
           exLength: candidate.exercises.length,
+          tonnage,
         };
       }
       return { status: 500 };

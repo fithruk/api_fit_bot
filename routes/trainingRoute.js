@@ -36,11 +36,13 @@ router.post("/getCurrentTrainingSession", async (req, res) => {
 router.post("/closeTrainingSession", async (req, res) => {
   const { userName } = req.body;
 
-  const { status, averageTimeOfRest, workoutDuration, exLength } =
+  const { status, averageTimeOfRest, workoutDuration, exLength, tonnage } =
     await newTrainingSession.closeCurrentTrainingSession(userName);
 
   if (status === 200) {
-    res.status(200).json({ averageTimeOfRest, workoutDuration, exLength });
+    res
+      .status(200)
+      .json({ averageTimeOfRest, workoutDuration, exLength, tonnage });
   } else {
     res.status(500).send("Somethink went wrong...");
   }
