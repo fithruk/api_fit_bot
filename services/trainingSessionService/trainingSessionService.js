@@ -4,6 +4,9 @@ const StatService = require("../../services/statService/statService");
 class TrainingSessionService {
   constructor() {}
 
+  resetTime = (date) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  };
   async getCurrentTreiningSession(userName) {
     try {
       const candidate = await trainingSessionSchema.findOne({
@@ -67,8 +70,7 @@ class TrainingSessionService {
 
       if (
         candidate &&
-        candidate.dateOfStart.getDay() < new Date().getDay() &&
-        candidate.dateOfStart.getDate() < new Date().getDate()
+        this.resetTime(candidate.dateOfStart) < this.resetTime(new Date())
       ) {
         this.closeCurrentTrainingSession(userName, true);
         candidate.isFinished = true;
