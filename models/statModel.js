@@ -29,6 +29,8 @@ const StatisticsShema = new Schema({
     type: String,
     requaired: true,
   },
+  exercisesOfWorkout: { type: Number, requaired: true },
+  setsOfWorkout: { type: Number, requaired: true },
   dateOfWorkout: {
     type: Date,
     requaired: true,

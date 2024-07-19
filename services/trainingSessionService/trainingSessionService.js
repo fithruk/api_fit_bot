@@ -120,6 +120,8 @@ class TrainingSessionService {
           durationInHours,
           durationInMinutes,
           tonnage,
+          exercisesOfWorkout,
+          setsOfWorkout,
         } = statService.prepareWorkoutData(
           candidate.exercises,
           candidate.dateOfStart,
@@ -135,9 +137,12 @@ class TrainingSessionService {
           dateOfStart: candidate.dateOfStart,
           workoutId: candidate._id,
           tonnage,
+          exercisesOfWorkout,
+          setsOfWorkout,
         };
 
         await statService.saveWorkoutData(workoutResult);
+        console.log(workoutResult);
 
         if (isForcedClose) {
           return { status: 200 };
@@ -146,7 +151,8 @@ class TrainingSessionService {
           status: 200,
           averageTimeOfRest: workoutResult.averageTimeOfRest,
           workoutDuration: workoutResult.workoutDuration,
-          exLength: candidate.exercises.length,
+          exercisesOfWorkout,
+          setsOfWorkout,
           tonnage,
         };
       }
@@ -333,6 +339,8 @@ class TrainingSessionService {
       console.error("Ошибка при поиске упражнений:", error.message);
     }
   };
+
+  getAllTonnage = async (username) => {};
 }
 
 const newTrainingSession = new TrainingSessionService();

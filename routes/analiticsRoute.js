@@ -57,9 +57,24 @@ router.post("/statByExersice", async (req, res) => {
   }
   const statService = new StatService();
   const preparedExData =
-    statService.prepareExerciseDataByUserNameAndExName(exerciseData);
+    statService.cutExerciseDataByUserNameAndExName(exerciseData);
 
   const imgUrl = await statService.loadGraphImg(preparedExData);
   res.status(200).json({ imgUrl });
+});
+// написать обработку подсчета тоннажа
+router.post("/statByTonnage", async (req, res) => {
+  const { userName } = req.body;
+  const statService = new StatService();
+  const exerciseData = await statService.getTonnageOfUser(userName);
+
+  if (exerciseData.length === 0) {
+    return res.status(204).send();
+  }
+  const preparedExData = statService.cutTonnageData(exerciseData);
+
+  const imgUrl = await statService.loadGraphImg(preparedExData);
+  //res.status(200).json({ imgUrl });
+  res.status(200).send("jopa");
 });
 module.exports = router;
