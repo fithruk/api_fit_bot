@@ -73,7 +73,7 @@ router.post("/statByTonnage", async (req, res) => {
   }
   const preparedExData = statService.cutTonnageData(exerciseData);
 
-  const imgUrl = await statService.loadGraphImg(preparedExData);
+  const imgUrl = await statService.loadTonnageGraghs(preparedExData);
   //res.status(200).json({ imgUrl });
   res.status(200).send("jopa");
 });

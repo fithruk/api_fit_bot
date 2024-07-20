@@ -148,7 +148,6 @@ class StatService {
   };
 
   loadGraphImg = async (preparedExData) => {
-    console.log(preparedExData);
     const options = {
       labels: preparedExData.map((item) =>
         moment(item.dateOfStart).format("'DD/MM/YYYY'")
@@ -164,6 +163,11 @@ class StatService {
     };
     const quickChart = new QuickChart(options);
     return await quickChart.loadQuickChartImg();
+  };
+
+  loadTonnageGraghs = async (preparedExData) => {
+    const { tonnages, workoutDurations, exercisesOfWorkout, setsOfWorkout } =
+      preparedExData[0];
   };
 }
 
