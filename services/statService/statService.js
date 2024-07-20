@@ -168,6 +168,19 @@ class StatService {
   loadTonnageGraghs = async (preparedExData) => {
     const { tonnages, workoutDurations, exercisesOfWorkout, setsOfWorkout } =
       preparedExData[0];
+    console.log(tonnages);
+    const options = {
+      labels: tonnages.map((_, ind) => `Тренировка № ${ind + 1}`),
+      labelLine: "Тоннаж за тренировку, количество повторений * вес снаряда",
+      labelBar: "",
+      dataForLine: tonnages,
+      dataForBar: [],
+      text: "Объем тренировочной нагрузки",
+    };
+
+    const quickChart = new QuickChart(options);
+    const url = await quickChart.loadQuickChartImg();
+    return url;
   };
 }
 

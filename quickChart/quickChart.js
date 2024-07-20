@@ -4,13 +4,37 @@ class QuickChart {
   constructor(options) {
     this.labels = options.labels;
     this.labelLine = options.labelLine;
-    this.labeBar = options.labeBar;
+    this.labelBar = options.labelBar;
     this.dataForLine = options.dataForLine;
     this.dataForBar = options.dataForBar;
     this.text = options.text;
   }
 
   generateSchema() {
+    if (this.labelBar === "") {
+      return {
+        type: "bar",
+        data: {
+          labels: this.labels, //[]
+          datasets: [
+            {
+              type: "line",
+              label: this.labelLine, //string
+              borderColor: "rgb(54, 162, 235)",
+              borderWidth: 1,
+              fill: false,
+              data: this.dataForLine, //[]
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: this.text,
+          },
+        },
+      };
+    }
     return {
       type: "bar",
       data: {
@@ -26,7 +50,7 @@ class QuickChart {
           },
           {
             type: "bar",
-            label: this.labeBar, //string
+            label: this.labelBar, //string
             borderColor: "rgb(0, 0, 235)",
             borderWidth: 2,
             fill: true,

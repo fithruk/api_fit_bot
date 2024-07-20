@@ -62,7 +62,7 @@ router.post("/statByExersice", async (req, res) => {
   const imgUrl = await statService.loadGraphImg(preparedExData);
   res.status(200).json({ imgUrl });
 });
-// написать обработку подсчета тоннажа
+
 router.post("/statByTonnage", async (req, res) => {
   const { userName } = req.body;
   const statService = new StatService();
@@ -74,7 +74,6 @@ router.post("/statByTonnage", async (req, res) => {
   const preparedExData = statService.cutTonnageData(exerciseData);
 
   const imgUrl = await statService.loadTonnageGraghs(preparedExData);
-  //res.status(200).json({ imgUrl });
-  res.status(200).send("jopa");
+  res.status(200).json({ imgUrl });
 });
 module.exports = router;
