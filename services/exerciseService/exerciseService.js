@@ -36,7 +36,7 @@ class AllExerciseService {
       return subGroupesArray;
     } catch (error) {
       console.error("Ошибка при отправке отдельного упражнения:", error);
-      // res.status(500).send("Ошибка при отправке отдельного упражнения");
+      res.status(500).send("Ошибка при отправке отдельного упражнения");
     }
   }
 
@@ -49,7 +49,7 @@ class AllExerciseService {
       return exercisesByGroup.map((ex) => ex.split(".")[0]);
     } catch (error) {
       console.error("Ошибка при отправке отдельного упражнения:", error);
-      // res.status(500).send("Ошибка при отправке отдельного упражнения");
+      res.status(500).send("Ошибка при отправке отдельного упражнения");
     }
   }
 
@@ -68,7 +68,7 @@ class AllExerciseService {
   async loadDescriptionOfExersice(exName) {
     try {
       const exercise = await exerciseModel.findOne({ name: exName });
-      console.log(exercise);
+      console.log(exName);
       exercise.steps[0].description = exercise.steps[0].description.map(
         (item) => {
           let phase = "Подготовка";
@@ -113,10 +113,3 @@ class AllExerciseService {
 const allExerciseService = new AllExerciseService();
 
 module.exports = { allExerciseService };
-
-// const imagePath = path.join(
-//     __dirname,
-//     "../../public/",
-//     `${subDirectory}`,
-//     "бицепс_гантелями_с_супинацией.jpg"
-//   );
