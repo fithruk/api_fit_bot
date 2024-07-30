@@ -4,6 +4,9 @@ const StatService = require("../../services/statService/statService");
 class TrainingSessionService {
   constructor() {}
 
+  resetTime = (date) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  };
   async getCurrentTreiningSession(userName) {
     try {
       const candidate = await trainingSessionSchema.findOne({
@@ -67,8 +70,7 @@ class TrainingSessionService {
 
       if (
         candidate &&
-        candidate.dateOfStart.getDay() < new Date().getDay() &&
-        candidate.dateOfStart.getDate() < new Date().getDate()
+        this.resetTime(candidate.dateOfStart) < this.resetTime(new Date())
       ) {
         this.closeCurrentTrainingSession(userName, true);
         candidate.isFinished = true;
@@ -117,11 +119,15 @@ class TrainingSessionService {
           averageRestInSeconds,
           durationInHours,
           durationInMinutes,
+          tonnage,
+          exercisesOfWorkout,
+          setsOfWorkout,
         } = statService.prepareWorkoutData(
           candidate.exercises,
           candidate.dateOfStart,
           endDate
         );
+
         candidate.isFinished = true;
         await candidate.save();
         const workoutResult = {
@@ -130,9 +136,13 @@ class TrainingSessionService {
           workoutDuration: { durationInHours, durationInMinutes },
           dateOfStart: candidate.dateOfStart,
           workoutId: candidate._id,
+          tonnage,
+          exercisesOfWorkout,
+          setsOfWorkout,
         };
 
         await statService.saveWorkoutData(workoutResult);
+        console.log(workoutResult);
 
         if (isForcedClose) {
           return { status: 200 };
@@ -141,7 +151,9 @@ class TrainingSessionService {
           status: 200,
           averageTimeOfRest: workoutResult.averageTimeOfRest,
           workoutDuration: workoutResult.workoutDuration,
-          exLength: candidate.exercises.length,
+          exercisesOfWorkout,
+          setsOfWorkout,
+          tonnage,
         };
       }
       return { status: 500 };
@@ -327,6 +339,8 @@ class TrainingSessionService {
       console.error("Ошибка при поиске упражнений:", error.message);
     }
   };
+
+  getAllTonnage = async (username) => {};
 }
 
 const newTrainingSession = new TrainingSessionService();

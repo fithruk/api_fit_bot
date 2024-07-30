@@ -1,3 +1,4 @@
+const moment = require("moment-timezone");
 const { Schema, model } = require("mongoose");
 
 const trainingSessionSchema = new Schema({
@@ -7,7 +8,7 @@ const trainingSessionSchema = new Schema({
   },
   dateOfStart: {
     type: Date,
-    default: Date.now(),
+    default: () => moment().tz("Europe/Kiev").toDate(),
     required: true,
   },
   isFinished: {

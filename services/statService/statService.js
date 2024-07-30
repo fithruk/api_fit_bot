@@ -45,23 +45,38 @@ class StatService {
     return { durationInHours, durationInMinutes };
   };
 
-  prepareWorkoutData = (exersiseArray, dateOfStart, dateOfEnd) => {
+  countWorkoutTonnage = (exersiseArray) => {
+    if (!Array.isArray(exersiseArray))
+      return console.log("exersiseArray mast be an array!");
+    return exersiseArray.reduce(
+      (acc, { countOfReps, weight }) => acc + countOfReps * weight,
+      0
+    );
+  };
+
+  prepareWorkoutData = (exerciseArray, dateOfStart, dateOfEnd) => {
     const { averageRestInMinutes, averageRestInSeconds } =
-      this.countAvarageTimeOfRestBetweenSets(exersiseArray);
+      this.countAvarageTimeOfRestBetweenSets(exerciseArray);
     const { durationInHours, durationInMinutes } = this.countDurationOfWorkout(
       dateOfStart,
       dateOfEnd
     );
+    const tonnage = this.countWorkoutTonnage(exerciseArray);
+    const { exercisesOfWorkout, setsOfWorkout } =
+      this.countExerciseAndSets(exerciseArray);
 
     return {
       averageRestInMinutes,
       averageRestInSeconds,
       durationInHours,
       durationInMinutes,
+      tonnage,
+      exercisesOfWorkout,
+      setsOfWorkout,
     };
   };
 
-  prepareExerciseDataByUserNameAndExName = (exerciseData) => {
+  cutExerciseDataByUserNameAndExName = (exerciseData) => {
     if (!Array.isArray(exerciseData)) return;
     exerciseData.sort((a, b) => a.dateOfStart - b.dateOfStart);
     if (exerciseData.length > 30) {
@@ -71,6 +86,47 @@ class StatService {
     return exerciseData;
   };
 
+  cutTonnageData = (exerciseData) => {
+    let stepOfSlice = 25;
+    if (!Array.isArray(exerciseData)) return;
+    exerciseData = exerciseData.map((item) => {
+      if (!Array.isArray(item)) return item;
+      if (item.length > 30) {
+        item = item.slice(item.length - stepOfSlice);
+      }
+      return item;
+    });
+    return exerciseData;
+  };
+
+  getTonnageOfUser = async (userName) => {
+    try {
+      const results = await StatisticsShema.aggregate([
+        {
+          $match: {
+            userName: userName,
+          },
+        },
+        {
+          $group: {
+            _id: "$userName",
+            tonnages: { $push: "$tonnage" },
+            workoutDurations: {
+              $push: {
+                durationInHours: "$workoutDuration.durationInHours",
+                durationInMinutes: "$workoutDuration.durationInMinutes",
+              },
+            },
+            exercisesOfWorkout: { $push: "$exercisesOfWorkout" },
+            setsOfWorkout: { $push: "$setsOfWorkout" },
+          },
+        },
+      ]);
+      return results;
+    } catch (error) {
+      console.error("Error during aggregation:", error);
+    }
+  };
   saveWorkoutData = async (data) => {
     try {
       const newWorkoutData = new StatisticsShema(data);
@@ -78,6 +134,17 @@ class StatService {
     } catch (error) {
       return error;
     }
+  };
+
+  countExerciseAndSets = (exerciseData) => {
+    if (!Array.isArray(exerciseData)) return;
+    const exercisesOfWorkout = new Set();
+    exerciseData.forEach((ex) => exercisesOfWorkout.add(ex.exercise));
+
+    return {
+      exercisesOfWorkout: exercisesOfWorkout.size,
+      setsOfWorkout: exerciseData.length,
+    };
   };
 
   loadGraphImg = async (preparedExData) => {
@@ -96,6 +163,24 @@ class StatService {
     };
     const quickChart = new QuickChart(options);
     return await quickChart.loadQuickChartImg();
+  };
+
+  loadTonnageGraghs = async (preparedExData) => {
+    const { tonnages, workoutDurations, exercisesOfWorkout, setsOfWorkout } =
+      preparedExData[0];
+    console.log(tonnages);
+    const options = {
+      labels: tonnages.map((_, ind) => `Тренировка № ${ind + 1}`),
+      labelLine: "Тоннаж за тренировку, количество повторений * вес снаряда",
+      labelBar: "",
+      dataForLine: tonnages,
+      dataForBar: [],
+      text: "Объем тренировочной нагрузки",
+    };
+
+    const quickChart = new QuickChart(options);
+    const url = await quickChart.loadQuickChartImg();
+    return url;
   };
 }
 
