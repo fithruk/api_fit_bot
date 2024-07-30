@@ -81,13 +81,18 @@ class TrainingSessionService {
 
       const newSession = new trainingSessionSchema({ userName });
       await newSession.save();
-      return { status: "succes" };
+      return { status: "succes", workoutId: newSession._id };
     } catch (error) {
       console.log("Ошибка во время создания новой тренировки");
       console.log(error.message);
       console.log(error);
       return { status: "error" };
     }
+  }
+
+  // Here...
+  async createNewTrainingSessionWithProgram(userName) {
+    const { status, workoutId } = await this.createNewTrainingSession(userName);
   }
 
   async isTrainingExist(userName) {
