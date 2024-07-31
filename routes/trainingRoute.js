@@ -17,6 +17,13 @@ router.post("/", async (req, res) => {
   res.json({ status });
 });
 
+router.post("/createNewTrainingSessionWithProgram", async (req, res) => {
+  const { userName } = req.body;
+  const { status } =
+    await newTrainingSession.createNewTrainingSessionWithProgram(userName);
+  res.json({ status });
+});
+
 router.post("/isTrainingExist", async (req, res) => {
   const { userName } = req.body;
 

@@ -101,6 +101,7 @@ class ExercisePlan {
       reps: this.#reps,
       weight: this.#weight,
       exersice: this.#exersice,
+      tonnage: this.#tonnage,
     };
   }
 

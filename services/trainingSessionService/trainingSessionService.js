@@ -1,4 +1,5 @@
 const trainingSessionSchema = require("../../models/trainingSessionModel");
+const programIdsStorage = require("../../models/programWorkoutsIdsModel");
 const StatService = require("../../services/statService/statService");
 
 class TrainingSessionService {
@@ -80,7 +81,7 @@ class TrainingSessionService {
       }
 
       const newSession = new trainingSessionSchema({ userName });
-      await newSession.save();
+      //await newSession.save();
       return { status: "succes", workoutId: newSession._id };
     } catch (error) {
       console.log("Ошибка во время создания новой тренировки");
@@ -92,7 +93,20 @@ class TrainingSessionService {
 
   // Here...
   async createNewTrainingSessionWithProgram(userName) {
-    const { status, workoutId } = await this.createNewTrainingSession(userName);
+    try {
+      const { status, workoutId } = await this.createNewTrainingSession(
+        userName
+      );
+      const newProgramIdsStorage = new programIdsStorage({
+        userName,
+        workoutId,
+      });
+      console.log(workoutId + " workoutId");
+      await newProgramIdsStorage.save();
+      return { status };
+    } catch (error) {
+      return error.message;
+    }
   }
 
   async isTrainingExist(userName) {
