@@ -37,4 +37,4 @@ const workoutProgramSchema = new Schema({
   ],
 });
 
-module.exports = model("WorkoutProgram", workoutProgramSchema);
+module.exports = model("workoutProgram", workoutProgramSchema);

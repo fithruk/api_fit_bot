@@ -88,4 +88,10 @@ router.patch("/removeSet", async (req, res) => {
   }
 });
 
+router.get("/myWorkoutPlan", async (req, res) => {
+  const { userName } = req.query;
+  const myPlan = await newTrainingSession.getMyWorkourPlan(userName);
+  res.status(200).json(myPlan);
+});
+
 module.exports = router;

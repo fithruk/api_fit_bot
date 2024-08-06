@@ -1,5 +1,7 @@
 const trainingSessionSchema = require("../../models/trainingSessionModel");
 const programIdsStorage = require("../../models/programWorkoutsIdsModel");
+const workoutProgramModel = require("../../models//workoutProgramModel");
+const workoutIdsModel = require("../../models/programWorkoutsIdsModel");
 const StatService = require("../../services/statService/statService");
 
 class TrainingSessionService {
@@ -81,7 +83,7 @@ class TrainingSessionService {
       }
 
       const newSession = new trainingSessionSchema({ userName });
-      //await newSession.save();
+      await newSession.save();
       return { status: "succes", workoutId: newSession._id };
     } catch (error) {
       console.log("Ошибка во время создания новой тренировки");
@@ -91,18 +93,26 @@ class TrainingSessionService {
     }
   }
 
-  // Here...
   async createNewTrainingSessionWithProgram(userName) {
     try {
+      const activProgram = await workoutProgramModel.findOne({
+        userName,
+      });
+
+      if (!activProgram) return { status: "error" };
+
       const { status, workoutId } = await this.createNewTrainingSession(
         userName
       );
-      const newProgramIdsStorage = new programIdsStorage({
-        userName,
-        workoutId,
-      });
-      console.log(workoutId + " workoutId");
-      await newProgramIdsStorage.save();
+
+      if (workoutId) {
+        const newProgramIdsStorage = new programIdsStorage({
+          userName,
+          workoutId,
+        });
+        await newProgramIdsStorage.save();
+      }
+
       return { status };
     } catch (error) {
       return error.message;
@@ -126,6 +136,7 @@ class TrainingSessionService {
   async closeCurrentTrainingSession(userName, isForcedClose = false) {
     const statService = new StatService();
     const endDate = new Date();
+    console.log("closeCurrentTrainingSession не сохраняет в базу");
 
     try {
       const candidate = await trainingSessionSchema.findOne({
@@ -133,6 +144,22 @@ class TrainingSessionService {
         isFinished: false,
       });
       if (candidate) {
+        const sessionWithTrainer = await workoutIdsModel.findOne({
+          userName,
+          workoutId: candidate._id,
+        });
+
+        if (sessionWithTrainer) {
+          const userProgram = await workoutProgramModel.findOne({ userName });
+          if (
+            userProgram.numberOfCurrentWorkout + 1 <
+            userProgram.workoutProgram.length
+          ) {
+            userProgram.numberOfCurrentWorkout += 1;
+            //await userProgram.save();
+          }
+        }
+
         const {
           averageRestInMinutes,
           averageRestInSeconds,
@@ -148,7 +175,7 @@ class TrainingSessionService {
         );
 
         candidate.isFinished = true;
-        await candidate.save();
+        //await candidate.save();
         const workoutResult = {
           userName,
           averageTimeOfRest: { averageRestInMinutes, averageRestInSeconds },
@@ -160,7 +187,7 @@ class TrainingSessionService {
           setsOfWorkout,
         };
 
-        await statService.saveWorkoutData(workoutResult);
+        // await statService.saveWorkoutData(workoutResult);
         console.log(workoutResult);
 
         if (isForcedClose) {
@@ -359,7 +386,11 @@ class TrainingSessionService {
     }
   };
 
-  getAllTonnage = async (username) => {};
+  getMyWorkourPlan = async (userName) => {
+    const { workoutProgram, numberOfCurrentWorkout } =
+      await workoutProgramModel.findOne({ userName });
+    return workoutProgram[numberOfCurrentWorkout];
+  };
 }
 
 const newTrainingSession = new TrainingSessionService();
